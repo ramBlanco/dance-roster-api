@@ -11,18 +11,18 @@ const sequelizePlugin = (
   const connectionString = `postgres://${sequelizeOptions.username}:${sequelizeOptions.password}@${sequelizeOptions.host}/${sequelizeOptions.database}`
   const sequelize = new Sequelize(connectionString)
 
-  fastifyInstance.addHook('onClose', (_, done) => sequelize.close().finally(done))
+  fastifyInstance.addHook('onClose', () => sequelize.close().finally())
 
   fastifyInstance.decorate('db', sequelize)
 
-  fastifyInstance.ready(async () => {
-    try {
-      await sequelize.authenticate()
-      fastifyInstance.log.info('Database connection is successfully established.')
-    } catch (err) {
-      fastifyInstance.log.fatal(`Connection could not be established: ${err}`)
-    }
-  })
+  // fastifyInstance.ready(async () => {
+  //   try {
+  //     await sequelize.authenticate()
+  //     fastifyInstance.log.info('Database connection is successfully established.')
+  //   } catch (err) {
+  //     fastifyInstance.log.fatal(`Connection could not be established: ${err}`)
+  //   }
+  // })
 
   done()
 }
