@@ -9,11 +9,11 @@ const sequelizePlugin = (
   done: HookHandlerDoneFunction,
 ) => {
   const connectionString = `postgres://${sequelizeOptions.username}:${sequelizeOptions.password}@${sequelizeOptions.host}/${sequelizeOptions.database}`
-  const sequelize = new Sequelize(connectionString)
+  // const sequelize = new Sequelize(connectionString)
 
-  fastifyInstance.addHook('onClose', () => sequelize.close().finally())
-
-  fastifyInstance.decorate('db', sequelize)
+  // fastifyInstance.addHook('onClose', () => sequelize.close().finally())
+  // 
+  // fastifyInstance.decorate('db', sequelize)
 
   // fastifyInstance.ready(async () => {
   //   try {
