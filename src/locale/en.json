@@ -5,6 +5,9 @@
 		},
 		"status": {
 			"description": "This endpoint allows us know the status of current server"
+		},
+		"index": {
+			"description": "routes.index.description"
 		}
 	}
 }
