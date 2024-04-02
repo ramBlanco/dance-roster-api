@@ -4,14 +4,14 @@
   "installCommand": "npm install",
   "outputDirectory": "build",
   "functions": {
-    "build/serverless.js": {
+    "build/serverless.ts": {
       "includeFiles": "build/**"
     }
   },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "api/serverless.ts"
+      "destination": "build/serverless.js"
     }
   ]
 }
