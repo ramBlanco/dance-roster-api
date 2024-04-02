@@ -1,5 +1,7 @@
 {
-  "version": 2,
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": "build",
   "builds": [
     {
       "src": "build/serverless.js",
@@ -11,10 +13,10 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "build/serverless.js"
+      "source": "/(.*)",
+      "destination": "build/serverless.js"
     }
   ]
 }
