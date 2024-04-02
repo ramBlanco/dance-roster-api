@@ -23,6 +23,45 @@ class AuthRoute implements IRoute {
       },
       AuthController.login,
     )
+    
+    //TODO: make controller method
+    fastify.post(
+      '/register',
+      {
+        schema: {
+          description: localeService.translate('routes.login.description'),
+          body: LoginSchema,
+          response: getSchemasResponse(LoginResponseSchema),
+        },
+      },
+      AuthController.login,
+    )
+
+    //TODO: make controller method
+    fastify.post(
+      '/forgot-password',
+      {
+        schema: {
+          description: localeService.translate('routes.login.description'),
+          body: LoginSchema,
+          response: getSchemasResponse(LoginResponseSchema),
+        },
+      },
+      AuthController.login,
+    )
+
+    //TODO: make controller method
+    fastify.post(
+      '/refresh',
+      {
+        schema: {
+          description: localeService.translate('routes.login.description'),
+          body: LoginSchema,
+          response: getSchemasResponse(LoginResponseSchema),
+        },
+      },
+      AuthController.login,
+    )
   }
 }
 
