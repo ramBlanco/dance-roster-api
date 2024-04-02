@@ -6,9 +6,7 @@
   "functions": {
     "build/serverless.js": {
       "runtime": "@vercel/node",
-      "includeFiles": [
-        "build/**"
-      ]
+      "includeFiles": "build/**"
     }
   },
   "rewrites": [
