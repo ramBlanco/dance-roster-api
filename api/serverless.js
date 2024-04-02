@@ -1,6 +1,3 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import { app } from "../src/server";
-
 import Fastify from "fastify";
 // Instantiate Fastify with some config
 const serverlessApp = Fastify({
@@ -8,13 +5,13 @@ const serverlessApp = Fastify({
 });
 
 
-serverlessApp.get('/', async (req: FastifyRequest, res: FastifyReply) => {
+serverlessApp.get('/', async (req, res) => {
   res.status(200).send({
       hello: 'World from serverlessApp'
   })
 })
 
-export default async (req: FastifyRequest, res: FastifyReply) => {
+export default async (req, res) => {
   await serverlessApp.ready()
   serverlessApp.server.emit("request", req, res)
 }
