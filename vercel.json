@@ -5,7 +5,6 @@
   "outputDirectory": "build",
   "functions": {
     "build/serverless.js": {
-      "runtime": "@vercel/node",
       "includeFiles": "build/**"
     }
   },
