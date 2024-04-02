@@ -7,9 +7,9 @@ const serverlessApp = Fastify({
   logger: false,
 });
 
-serverlessApp.register(import("../functions/index"), {
-  prefix: '/'
-});
+serverlessApp.get('/', (_, reply) => {
+  return reply.status(200).send('this is a new message')
+})
 
 export default async (req: FastifyRequest, res: FastifyReply) => {
   await serverlessApp.ready()
