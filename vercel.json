@@ -1,5 +1,4 @@
 {
-  "buildCommand":"npm run build",
   "version": 2,
   "builds": [
     {
@@ -9,7 +8,8 @@
         "includeFiles": [
           "build/**"
         ]
-      }
+      },
+      "buildCommand":"npm run build"
     }
   ],
   "routes": [
