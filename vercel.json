@@ -1,18 +1,16 @@
 {
+  "framework": null,
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "outputDirectory": "build",
-  "builds": [
-    {
-      "src": "build/serverless.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": [
-          "build/**"
-        ]
-      }
+  "functions": {
+    "build/serverless.js": {
+      "runtime": "@vercel/node",
+      "includeFiles": [
+        "build/**"
+      ]
     }
-  ],
+  },
   "rewrites": [
     {
       "source": "/(.*)",
