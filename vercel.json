@@ -1,9 +1,9 @@
 {
   "buildCommand": "npm run build",
-  "redirects": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "build/serverless.js"
+      "src": "/(.*)",
+      "dest": "build/serverless.js"
     }
   ]
 }
