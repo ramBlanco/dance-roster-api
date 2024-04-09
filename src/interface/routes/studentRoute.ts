@@ -3,12 +3,10 @@ import { LocaleService } from '../../application/services/localeService'
 import { INJECTIONS } from '../../infrastructure/config/dependencyInjection/di'
 import { app } from '../../server'
 import { IRoute } from '../../domain/interfaces/routeInterface'
-import EventController from '../controllers/eventController'
-import { StoreEventResponseSchema, StoreEventSchema } from '../../domain/validation/events/storeEventSchemaRequest'
-import { getSchemasResponse } from '../../domain/validation/generic'
+import StudentController from '../controllers/studentController'
 
-class EventRoute implements IRoute {
-  public prefixRoute = 'v1/events'
+class StudentRoute implements IRoute {
+  public prefixRoute = 'v1/students'
 
   async routes(fastify: FastifyInstance, _options: FastifyPluginOptions, _done: any): Promise<void> {
     const localeService = app.instance.diContainer.resolve<LocaleService>(INJECTIONS.LOCALE_SERVICE)
@@ -20,29 +18,18 @@ class EventRoute implements IRoute {
           description: localeService.translate('routes.event.index.description'),
         },
       },
-      EventController.index,
+      StudentController.index,
     )
 
+    //TODO: add event controller method
     fastify.post(
       '/',
       {
         schema: {
           description: localeService.translate('routes.event.store.description'),
-          body: StoreEventSchema,
-          response: getSchemasResponse(StoreEventResponseSchema),
         },
       },
-      EventController.store,
-    )
-
-    fastify.get(
-      '/:id',
-      {
-        schema: {
-          description: localeService.translate('routes.event.view.description'),
-        },
-      },
-      EventController.view,
+      StudentController.store,
     )
 
     //TODO: add event controller method
@@ -53,7 +40,7 @@ class EventRoute implements IRoute {
           description: localeService.translate('routes.event.update.description'),
         },
       },
-      EventController.update,
+      StudentController.update,
     )
 
     //TODO: add event controller method
@@ -64,9 +51,9 @@ class EventRoute implements IRoute {
           description: localeService.translate('routes.event.delete.description'),
         },
       },
-      EventController.delete,
+      StudentController.delete,
     )
   }
 }
 
-export default EventRoute
+export default StudentRoute

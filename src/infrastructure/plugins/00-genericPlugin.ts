@@ -17,6 +17,25 @@ function genericPlugin(fastifyInstance: FastifyInstance, _opts: Record<never, ne
     reply.send(err)
   })
 
+  fastifyInstance.decorateReply('sendPaginationResponseData', async function (data: unknown, total?: number) {
+    const payload = {
+      status: 200,
+      metadata: {
+        count: 0,
+        total: 0,
+      },
+      data,
+    }
+
+    if (Array.isArray(data)) {
+      payload.metadata.count = data.length
+      payload.metadata.total = total || 0
+    }
+
+    await this.send(payload)
+    await this.status(200)
+  })
+
   done()
 }
 

@@ -10,4 +10,8 @@ declare module 'fastify' {
     description: string
     tags?: string[]
   }
+
+  interface FastifyReply {
+    sendPaginationResponseData(data: unknown, total?: number): void;
+  }
 }

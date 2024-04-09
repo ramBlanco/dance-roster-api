@@ -6,5 +6,6 @@ export const sequelizeOptions: Options = {
   database: Config.database.postgresDb,
   username: Config.database.postgresUser,
   password: Config.database.postgresPassword,
+  port: Number(Config.database.postgresPort),
   dialect: 'postgres',
 }
