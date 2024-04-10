@@ -8,6 +8,40 @@
 		},
 		"index": {
 			"description": "routes.index.description"
+		},
+		"event": {
+			"index": {
+				"description": "routes.event.index.description"
+			},
+			"store": {
+				"description": "routes.event.store.description"
+			},
+			"view": {
+				"description": "routes.event.view.description"
+			},
+			"update": {
+				"description": "routes.event.update.description"
+			},
+			"delete": {
+				"description": "routes.event.delete.description"
+			}
+		},
+		"location": {
+			"index": {
+				"description": "routes.location.index.description"
+			},
+			"store": {
+				"description": "routes.location.store.description"
+			},
+			"view": {
+				"description": "routes.location.view.description"
+			},
+			"update": {
+				"description": "routes.location.update.description"
+			},
+			"delete": {
+				"description": "routes.location.delete.description"
+			}
 		}
 	}
 }

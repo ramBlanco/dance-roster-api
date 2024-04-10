@@ -23,7 +23,7 @@ class EventController {
 
   static async view(request: FastifyRequest<{Params: {id: string}}>, reply: FastifyReply) {
     const eventViewUseCase = app.instance.diContainer.resolve<EventViewUseCase>(INJECTIONS.useCases.events.viewUseCase)
-    const event = eventViewUseCase.handler(request.params.id)
+    const event = await eventViewUseCase.handler(request.params.id)
     return reply.code(200).send(event)
   }
 

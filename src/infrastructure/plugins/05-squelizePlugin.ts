@@ -2,6 +2,7 @@ import { FastifyInstance, HookHandlerDoneFunction } from 'fastify'
 import fp from 'fastify-plugin'
 import { Sequelize } from 'sequelize'
 import { sequelizeOptions } from '../database/postgresql'
+import { loadModules } from '../database/postgresql/models'
 
 const sequelizePlugin = (
   fastifyInstance: FastifyInstance,
@@ -18,6 +19,7 @@ const sequelizePlugin = (
     try {
       await sequelize.authenticate()
       fastifyInstance.log.info('Database connection is successfully established.')
+      loadModules(sequelize)
     } catch (err) {
       fastifyInstance.log.fatal(`Connection could not be established: ${err}`)
     }

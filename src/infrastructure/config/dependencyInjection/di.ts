@@ -6,11 +6,13 @@ export const INJECTIONS = {
 
   repositories: {
     eventRepository: 'eventRepository',
-    studentRepository: 'studentRepository'
+    studentRepository: 'studentRepository',
+    locationRepository: 'locationRepository',
   },
   services: {
     eventService: 'eventService',
-    studentService: 'studentService'
+    studentService: 'studentService',
+    locationService: 'locationService',
   },
   useCases: {
     events: {
@@ -20,6 +22,11 @@ export const INJECTIONS = {
     },
     students: {
       indexUseCase: 'studentIndexUseCase'
+    },
+    locations: {
+      indexUseCase: 'locationIndexUseCase',
+      storeUseCase: 'locationStoreUseCase',
+      viewUseCase: 'locationViewUseCase',
     },
   }
 }

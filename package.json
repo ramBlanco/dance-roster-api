@@ -7,12 +7,20 @@
     "test": "jest",
     "test:watch": "npm run test -- --watch",
     "start": "NODE_PATH=./build node build/server.js",
-    "build": "tsc -p .",
+    "build": "npm run clean && tsc -p . && npm run remove:typings",
     "dev": "nodemon src/server.ts",
     "lint": "eslint . --ext .js --ext .ts",
     "lint:fix": "npm run lint -- --fix",
     "prettier-fix": "prettier --write \"src/**/*.ts\"",
-    "code:check": "lint:fix; npm run prettier-fix"
+    "code:check": "lint:fix; npm run prettier-fix",
+    "clean": "rimraf build",
+    "remove:typings": "npm rum remove:migrations && npm run remove:seeders",
+    "remove:migrations": "rimraf -v build/infrastructure/migrations/*.d.ts",
+    "remove:seeders": "rimraf -v build/infrastructure/seeders/*.d.ts",
+    "seed:up": "npm run build && npx sequelize-cli db:seed:all",
+    "seed:undo": "npm run build && npx sequelize-cli db:seed:undo",
+    "migrate:up": "npm run build && npx sequelize-cli db:migrate",
+    "migrate:undo": "npm run build && npx sequelize-cli db:migrate:undo"
   },
   "author": "Ramses Banco (@ramBlanco)",
   "license": "ISC",
@@ -37,6 +45,7 @@
     "lint-staged": "^13.2.0",
     "nodemon": "^2.0.21",
     "prettier": "^2.8.4",
+    "sequelize-cli": "^6.6.2",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
@@ -63,6 +72,7 @@
     "pg": "^8.11.5",
     "pg-hstore": "^2.3.4",
     "prisma": "^5.12.0",
-    "sequelize": "^6.29.3"
+    "sequelize": "^6.29.3",
+    "sequelize-typescript": "^2.1.6"
   }
 }

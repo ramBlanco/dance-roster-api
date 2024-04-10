@@ -1,7 +1,7 @@
 import { StoreEventRequest } from '../../../domain/interfaces/requests/events/storeEventRequest'
-import { EventEntity } from '../../../domain/entities/eventEntity'
 import { UseCaseBase } from '../../../domain/interfaces/useCaseInterface'
 import { EventService } from '../../services/eventService'
+import { Event } from '../../../infrastructure/database/postgresql/models/event.model'
 
 export class EventStoreUseCase extends UseCaseBase {
   constructor(
@@ -10,7 +10,7 @@ export class EventStoreUseCase extends UseCaseBase {
     super()
   }
 
-  override async handler(params: StoreEventRequest): Promise<EventEntity> {
-    return await this.eventService.storeEvent()
+  override async handler(params: StoreEventRequest): Promise<Event> {
+    return await this.eventService.storeEvent(params)
   }
 }

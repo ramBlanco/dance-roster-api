@@ -38,7 +38,7 @@ export class QueryFilterHandler {
     this.paginationStrategy.handle(queryFilterEntity)
 
     return {
-      where: queryFilterEntity.where,
+      where: queryFilterEntity.where || null,
       pagination: queryFilterEntity.pagination
     }
   }

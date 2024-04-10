@@ -1,4 +1,4 @@
-import { StudentService } from '~src/application/services/studentService'
+import { StudentService } from '../../../application/services/studentService'
 import { UseCaseBase } from '../../../domain/interfaces/useCaseInterface'
 import { QueryFilterHandler } from '../../handlers/queryFilterHandler'
 import { EventService } from '../../services/eventService'

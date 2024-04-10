@@ -1,0 +1,40 @@
+import { FastifyReply, FastifyRequest } from 'fastify'
+import { app } from '../../server'
+import { INJECTIONS } from '../../infrastructure/config/dependencyInjection/di'
+import { EventViewUseCase } from '../../application/useCases/events/eventViewUseCase '
+import { LocationIndexUseCase } from '../../application/useCases/locations/locationIndexUseCase'
+import { ILocationIndexRequest } from '../../domain/interfaces/requests/locations/indexLocationRequest'
+import { LocationStoreUseCase } from '../../application/useCases/locations/locationStoreUseCase'
+import { StoreLocationRequest } from '../../domain/interfaces/requests/locations/storeLocationRequest'
+import { LocationViewUseCase } from '../../application/useCases/locations/locationViewUseCase '
+
+class LocationController {
+  static async index(request: FastifyRequest<{ Querystring: ILocationIndexRequest }>, reply: FastifyReply) {
+    const locationIndexUseCase = app.instance.diContainer.resolve<LocationIndexUseCase>(INJECTIONS.useCases.locations.indexUseCase)
+    const locations = await locationIndexUseCase.handler(request.query)
+
+    return reply.sendPaginationResponseData(locations)
+  }
+
+  static async store(request: FastifyRequest<{ Body: StoreLocationRequest }>, reply: FastifyReply) {
+    const locationStoreUseCase = app.instance.diContainer.resolve<LocationStoreUseCase>(INJECTIONS.useCases.locations.storeUseCase)
+    const location = locationStoreUseCase.handler(request.body)
+    return reply.code(200).send(location)
+  }
+
+  static async view(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+    const locationViewUseCase = app.instance.diContainer.resolve<LocationViewUseCase>(INJECTIONS.useCases.locations.viewUseCase)
+    const location = locationViewUseCase.handler(request.params.id)
+    return reply.code(200).send(location)
+  }
+
+  static async update(_request: FastifyRequest, reply: FastifyReply) {
+    return reply.code(200).send({})
+  }
+
+  static async delete(_request: FastifyRequest, reply: FastifyReply) {
+    return reply.code(200).send({})
+  }
+}
+
+export default LocationController

@@ -1,4 +1,3 @@
-export type StoreEventRequest = {
-  date: Date
-  title?: string
-}
+import { EventEntity } from "../../../../domain/entities/eventEntity";
+
+export type StoreEventRequest = EventEntity
