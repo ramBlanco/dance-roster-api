@@ -7,6 +7,7 @@ export class Tenant extends Model<InferAttributes<Tenant>, InferCreationAttribut
   
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
+  declare deletedAt: CreationOptional<Date>;
 }
 
 export const loadTenantModel = (db: Sequelize) => {
@@ -31,6 +32,11 @@ export const loadTenantModel = (db: Sequelize) => {
         type: DataType.DATE,
         allowNull: true,
         field: 'updated_at'
+      },
+      deletedAt: {
+        type: DataType.DATE,
+        allowNull: true,
+        field: 'deleted_at'
       },
     },
     {

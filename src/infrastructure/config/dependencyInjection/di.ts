@@ -8,17 +8,24 @@ export const INJECTIONS = {
     eventRepository: 'eventRepository',
     studentRepository: 'studentRepository',
     locationRepository: 'locationRepository',
+    tenantRepository: 'tenantRepository',
+    personRepository: 'personRepository',
+    eventPersonRepository: 'eventPersonRepository',
   },
   services: {
     eventService: 'eventService',
     studentService: 'studentService',
     locationService: 'locationService',
+    validationService: 'validationService',
+    personService: 'personService',
+    eventPersonService: 'eventPersonService',
   },
   useCases: {
     events: {
       indexUseCase: 'eventsIndexUseCase',
       storeUseCase: 'eventStoreUseCase',
       viewUseCase: 'eventViewUseCase',
+      addPersonToEventUseCase: 'addPersonToEventUseCase',
     },
     students: {
       indexUseCase: 'studentIndexUseCase'
@@ -27,6 +34,11 @@ export const INJECTIONS = {
       indexUseCase: 'locationIndexUseCase',
       storeUseCase: 'locationStoreUseCase',
       viewUseCase: 'locationViewUseCase',
+    },
+    persons: {
+      indexUseCase: 'personIndexUseCase',
+      storeUseCase: 'personStoreUseCase',
+      viewUseCase: 'personViewUseCase',
     },
   }
 }

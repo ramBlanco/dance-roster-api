@@ -3,10 +3,12 @@ import { AuthSchema } from './authRequest'
 import { UserSchema } from './userRequest'
 import { EventsSchema } from './events'
 import { LocationSchemas } from './locations'
+import { PersonSchemas } from './persons'
 
 export const registerSchemas = (instance: FastifyInstance): void => {
   UserSchema(instance)
   AuthSchema(instance)
   EventsSchema(instance)
   LocationSchemas(instance)
+  PersonSchemas(instance)
 }

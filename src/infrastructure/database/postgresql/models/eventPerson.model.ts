@@ -10,6 +10,7 @@ export class EventPerson extends Model<InferAttributes<EventPerson>, InferCreati
   
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
+  declare deletedAt: CreationOptional<Date>;
 }
 
 export const loadEventPersonModel = (db: Sequelize) => {
@@ -66,6 +67,11 @@ export const loadEventPersonModel = (db: Sequelize) => {
         type: DataType.DATE,
         allowNull: true,
         field: 'updated_at'
+      },
+      deletedAt: {
+        type: DataType.DATE,
+        allowNull: true,
+        field: 'deleted_at'
       },
     },
     {

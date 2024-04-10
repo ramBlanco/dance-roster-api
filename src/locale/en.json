@@ -24,6 +24,12 @@
 			},
 			"delete": {
 				"description": "routes.event.delete.description"
+			},
+			"addPerson": {
+				"description": "routes.event.addPerson.description"
+			},
+			"addPersons": {
+				"description": "routes.event.addPersons.description"
 			}
 		},
 		"location": {

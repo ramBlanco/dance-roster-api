@@ -1,7 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { app } from '../../server'
 import { INJECTIONS } from '../../infrastructure/config/dependencyInjection/di'
-import { EventViewUseCase } from '../../application/useCases/events/eventViewUseCase '
 import { LocationIndexUseCase } from '../../application/useCases/locations/locationIndexUseCase'
 import { ILocationIndexRequest } from '../../domain/interfaces/requests/locations/indexLocationRequest'
 import { LocationStoreUseCase } from '../../application/useCases/locations/locationStoreUseCase'
@@ -12,7 +11,6 @@ class LocationController {
   static async index(request: FastifyRequest<{ Querystring: ILocationIndexRequest }>, reply: FastifyReply) {
     const locationIndexUseCase = app.instance.diContainer.resolve<LocationIndexUseCase>(INJECTIONS.useCases.locations.indexUseCase)
     const locations = await locationIndexUseCase.handler(request.query)
-
     return reply.sendPaginationResponseData(locations)
   }
 

@@ -6,6 +6,7 @@ import { IRoute } from '../../domain/interfaces/routeInterface'
 import EventController from '../controllers/eventController'
 import { StoreEventResponseSchema, StoreEventSchema } from '../../domain/validation/events/storeEventSchemaRequest'
 import { getSchemasResponse } from '../../domain/validation/generic'
+import { AddPersonToEventRequestSchema } from '../../domain/validation/events/addPersonToEventSchemaRequest'
 
 class EventRoute implements IRoute {
   public prefixRoute = 'v1/events'
@@ -43,6 +44,17 @@ class EventRoute implements IRoute {
         },
       },
       EventController.view,
+    )
+
+    fastify.post(
+      '/:id/persons',
+      {
+        schema: {
+          description: localeService.translate('routes.event.addPersons.description'),
+          body: AddPersonToEventRequestSchema,
+        },
+      },
+      EventController.addPerson,
     )
 
     //TODO: add event controller method
