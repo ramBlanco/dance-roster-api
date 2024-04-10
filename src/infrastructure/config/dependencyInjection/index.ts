@@ -43,7 +43,7 @@ export function registerDependencies(): void {
     ) 
   })
   diContainer.register({
-    [INJECTIONS.services.studentService]: asFunction(
+    [INJECTIONS.services.locationService]: asFunction(
       ({ locationRepository }) => new LocationService(locationRepository),
       { lifetime: Lifetime.SCOPED }
     ) 

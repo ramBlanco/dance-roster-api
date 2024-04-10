@@ -7,13 +7,13 @@ function swaggerPlugin(fastifyInstance: FastifyInstance, _opts: Record<never, ne
     prefix: '/v1/documentation',
     openapi: {
       info: {
-        title: 'NunkyFinance Api',
+        title: 'Bailelog Api',
         description: '',
         version: '0.0.1',
       },
       servers: [
         { url: 'http://localhost:4000', description: 'Local' },
-        { url: 'https://nunky.com', description: 'Production' },
+        { url: 'https://bailelog.com', description: 'Production' },
       ],
       components: {
         securitySchemes: {

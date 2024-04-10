@@ -18,13 +18,13 @@ class LocationController {
 
   static async store(request: FastifyRequest<{ Body: StoreLocationRequest }>, reply: FastifyReply) {
     const locationStoreUseCase = app.instance.diContainer.resolve<LocationStoreUseCase>(INJECTIONS.useCases.locations.storeUseCase)
-    const location = locationStoreUseCase.handler(request.body)
+    const location = await locationStoreUseCase.handler(request.body)
     return reply.code(200).send(location)
   }
 
   static async view(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
     const locationViewUseCase = app.instance.diContainer.resolve<LocationViewUseCase>(INJECTIONS.useCases.locations.viewUseCase)
-    const location = locationViewUseCase.handler(request.params.id)
+    const location = await locationViewUseCase.handler(request.params.id)
     return reply.code(200).send(location)
   }
 

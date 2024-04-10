@@ -3,9 +3,9 @@ import { LocaleService } from '../../application/services/localeService'
 import { INJECTIONS } from '../../infrastructure/config/dependencyInjection/di'
 import { app } from '../../server'
 import { IRoute } from '../../domain/interfaces/routeInterface'
-import { StoreEventResponseSchema, StoreEventSchema } from '../../domain/validation/events/storeEventSchemaRequest'
 import { getSchemasResponse } from '../../domain/validation/generic'
 import LocationController from '../controllers/locationController'
+import { StoreLocationResponseSchema, StoreLocationSchema } from '../../domain/validation/locations/storeLocationSchemaRequest'
 
 class LocationRoute implements IRoute {
   public prefixRoute = 'v1/location'
@@ -28,8 +28,8 @@ class LocationRoute implements IRoute {
       {
         schema: {
           description: localeService.translate('routes.location.store.description'),
-          body: StoreEventSchema,
-          response: getSchemasResponse(StoreEventResponseSchema),
+          body: StoreLocationSchema,
+          response: getSchemasResponse(StoreLocationResponseSchema),
         },
       },
       LocationController.store,

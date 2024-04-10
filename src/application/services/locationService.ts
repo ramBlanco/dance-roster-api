@@ -1,6 +1,4 @@
-import { EventsRepository } from "../../infrastructure/repositories/eventRepository";
 import { IQueryFilterHandlerResponse } from "../../domain/interfaces/strategies/queryFilter/queryFilterHandlerResponseInterface";
-import { EventEntity } from "../../domain/entities/eventEntity";
 import { LocationsRepository } from "../../infrastructure/repositories/locationRepository";
 import { Location } from "../../infrastructure/database/postgresql/models/location.model";
 import { LocationEntity } from "../../domain/entities/locationEntity";

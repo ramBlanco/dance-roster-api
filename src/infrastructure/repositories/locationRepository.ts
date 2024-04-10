@@ -1,5 +1,4 @@
 import { HttpNotFound } from '../../application/libraries/httpErrors'
-import { EventEntity } from '../../domain/entities/eventEntity'
 import { Location } from '../database/postgresql/models/location.model'
 
 export class LocationsRepository {
@@ -24,7 +23,7 @@ export class LocationsRepository {
   }
 
   public async view(id: string): Promise<Location> {
-    const event = await Location.findByPk(id)
+    const event = await Location.findOne({ where: { id: String(id) } })
     if (!event) throw new HttpNotFound("LOCATION NOT FOUND")
     return event
   }

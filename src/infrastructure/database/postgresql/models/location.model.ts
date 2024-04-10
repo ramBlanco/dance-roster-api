@@ -9,6 +9,7 @@ export class Location extends Model<InferAttributes<Location>, InferCreationAttr
   
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
+  declare deletedAt: CreationOptional<Date>;
 }
 
 export const loadLocationModel = (db: Sequelize) => {
@@ -46,6 +47,11 @@ export const loadLocationModel = (db: Sequelize) => {
         type: DataType.DATE,
         allowNull: true,
         field: 'updated_at'
+      },
+      deletedAt: {
+        type: DataType.DATE,
+        allowNull: true,
+        field: 'deleted_at'
       },
     },
     {
