@@ -7,9 +7,12 @@ export class PaginationStrategy extends QueryFilterStrategy {
   symbolQuery = undefined;
 
   public getAndParseParams(request: QueryFilterEntity): void {
+    const page = Number(request.query['page'] || 1)
     const pageSize = Number(request.query['pageSize'])
-    const offset = Number(request.query['offset'])
-
+    let offset = Number(request.query['offset'])
+    
+    if (!offset && (pageSize && page && page > 1)) offset = (page * pageSize) - pageSize
+    
     request.setPageSize(pageSize)
     request.setPaginationOffset(offset)
   }

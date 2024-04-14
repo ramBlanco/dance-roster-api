@@ -1,16 +1,28 @@
-import { Model, InferAttributes, InferCreationAttributes, Sequelize, CreationOptional } from 'sequelize';
+import { Model, InferAttributes, InferCreationAttributes, Sequelize, CreationOptional, NonAttribute, ForeignKey, Association } from 'sequelize';
 import { DataType } from 'sequelize-typescript';
+import { Person } from './person.model';
+import { EventPerson } from './eventPerson.model';
+import { Location } from './location.model';
 
-export class Event extends Model<InferAttributes<Event>, InferCreationAttributes<Event>> {
+export class Event extends Model<InferAttributes<Event, { omit: 'location' }>, InferCreationAttributes<Event, { omit: 'location' }>> {
   declare id: CreationOptional<string>
   declare tenantId: string
-  declare locationId: string
+  declare locationId: ForeignKey<Location['id']>;
+
   declare date: Date
   declare title: string
-  
+  declare slug: CreationOptional<string>
+
+  declare location?: NonAttribute<Location>;
+  // declare persons?: NonAttribute<Person[]>;
+
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
+
+  declare static associations: {
+    location: Association<Location, Event>;
+  };
 }
 
 export const loadEventModel = (db: Sequelize) => {
@@ -18,7 +30,6 @@ export const loadEventModel = (db: Sequelize) => {
     {
       id: {
         type: DataType.UUID,
-        autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
@@ -35,10 +46,6 @@ export const loadEventModel = (db: Sequelize) => {
         type: DataType.UUID,
         allowNull: false,
         field: 'location_id',
-        references: {
-          model: 'locations',
-          key: 'id',
-        },
       },
       date: {
         allowNull: false,
@@ -46,6 +53,10 @@ export const loadEventModel = (db: Sequelize) => {
       },
       title: {
         allowNull: false,
+        type: DataType.STRING,
+      },
+      slug: {
+        allowNull: true,
         type: DataType.STRING,
       },
       createdAt: {
@@ -73,4 +84,8 @@ export const loadEventModel = (db: Sequelize) => {
   )
 }
 
+export const loadEventRelations = () => {
+  Event.belongsTo(Location, { targetKey: 'id', foreignKey: 'locationId' });
+  Event.belongsToMany(Person, { through: EventPerson, foreignKey: 'eventId' })
+}
 

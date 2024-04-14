@@ -26,6 +26,7 @@ export const INJECTIONS = {
       storeUseCase: 'eventStoreUseCase',
       viewUseCase: 'eventViewUseCase',
       addPersonToEventUseCase: 'addPersonToEventUseCase',
+      getPersonFromEventUseCase: 'getPersonFromEventUseCase',
     },
     students: {
       indexUseCase: 'studentIndexUseCase'

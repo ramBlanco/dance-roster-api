@@ -1,15 +1,22 @@
-import { Model, InferAttributes, InferCreationAttributes, Sequelize, CreationOptional } from 'sequelize';
+import { Model, InferAttributes, InferCreationAttributes, Sequelize, CreationOptional, NonAttribute, Association } from 'sequelize';
 import { DataType } from 'sequelize-typescript';
+import { Event } from './event.model';
 
-export class Location extends Model<InferAttributes<Location>, InferCreationAttributes<Location>> {
+export class Location extends Model<InferAttributes<Location, { omit: 'events' }>, InferCreationAttributes<Location, { omit: 'events' }>> {
   declare id: CreationOptional<string>
   declare name: string
   declare address: CreationOptional<string>;
   declare tenantId: string
-  
+
+  declare events?: NonAttribute<Event[]>;
+
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
+
+  declare static associations: {
+    events: Association<Location, Event>;
+  };
 }
 
 export const loadLocationModel = (db: Sequelize) => {
@@ -17,7 +24,6 @@ export const loadLocationModel = (db: Sequelize) => {
     {
       id: {
         type: DataType.UUID,
-        autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
@@ -55,6 +61,7 @@ export const loadLocationModel = (db: Sequelize) => {
       },
     },
     {
+      modelName: 'locations',
       timestamps: true,
       paranoid: true,
       tableName: 'locations',
@@ -63,4 +70,6 @@ export const loadLocationModel = (db: Sequelize) => {
   )
 }
 
-
+export const loadLocationRelation = () => {
+  Location.hasMany(Event, { sourceKey: 'id', foreignKey: 'locationId', as: 'events' });
+}

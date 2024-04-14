@@ -1,13 +1,22 @@
-import { Model, InferAttributes, InferCreationAttributes, Sequelize, CreationOptional } from 'sequelize';
+import { Model, InferAttributes, InferCreationAttributes, Sequelize, CreationOptional, ForeignKey, NonAttribute } from 'sequelize';
 import { DataType } from 'sequelize-typescript';
+import { Person } from './person.model';
+import { Tenant } from './tenant.model';
+import { Event } from './event.model';
+import { Location } from './location.model';
 
 export class EventPerson extends Model<InferAttributes<EventPerson>, InferCreationAttributes<EventPerson>> {
   declare id: CreationOptional<string>
-  declare tenantId: string
-  declare personId: string
-  declare eventId: string
-  declare locationId: string
-  
+  declare tenantId: ForeignKey<Tenant['id']>
+  declare personId: ForeignKey<Person['id']>
+  declare eventId: ForeignKey<Event['id']>
+  declare locationId: ForeignKey<Location['id']>
+
+  declare tenant?: NonAttribute<Tenant>;
+  declare person?: NonAttribute<Person>;
+  declare event?: NonAttribute<Event>;
+  declare location?: NonAttribute<Location>;
+
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
@@ -17,8 +26,7 @@ export const loadEventPersonModel = (db: Sequelize) => {
   EventPerson.init(
     {
       id: {
-        type: DataType.BIGINT,
-        autoIncrement: true,
+        type: DataType.UUID,
         primaryKey: true,
         allowNull: false
       },
@@ -26,37 +34,21 @@ export const loadEventPersonModel = (db: Sequelize) => {
         type: DataType.UUID,
         allowNull: false,
         field: 'tenant_id',
-        references: {
-          model: 'tenants',
-          key: 'id',
-        },
       },
       personId: {
         type: DataType.UUID,
         allowNull: false,
         field: 'person_id',
-        references: {
-          model: 'persons',
-          key: 'id',
-        },
       },
       eventId: {
         type: DataType.UUID,
         allowNull: false,
         field: 'event_id',
-        references: {
-          model: 'events',
-          key: 'id',
-        },
       },
       locationId: {
         type: DataType.UUID,
         allowNull: false,
         field: 'location_id',
-        references: {
-          model: 'locations',
-          key: 'id',
-        },
       },
       createdAt: {
         type: DataType.DATE,
@@ -78,9 +70,16 @@ export const loadEventPersonModel = (db: Sequelize) => {
       timestamps: true,
       paranoid: true,
       tableName: 'event_persons',
-      sequelize: db
+      sequelize: db,
     }
   )
+}
+
+export const loadEventPersonRelations = () => {
+  EventPerson.belongsTo(Person, { targetKey: 'id', foreignKey: 'personId' })
+  EventPerson.belongsTo(Tenant, { targetKey: 'id', foreignKey: 'tenantId' })
+  EventPerson.belongsTo(Location, { targetKey: 'id', foreignKey: 'locationId' })
+  EventPerson.belongsTo(Event, { targetKey: 'id', foreignKey: 'eventId' })
 }
 
 

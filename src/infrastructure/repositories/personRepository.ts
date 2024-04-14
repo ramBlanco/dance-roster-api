@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto'
 import { HttpNotFound } from '../../application/libraries/httpErrors'
 import { Person } from '../database/postgresql/models/person.model'
 
@@ -21,6 +22,7 @@ export class PersonRepository {
 
   public async store(params: Pick<Person, "birthDate" | "email" | "firstName" | "lastName">): Promise<Person> {
     return await Person.create({
+      id: randomUUID(),
       birthDate: params.birthDate,
       email: params.email,
       firstName: params.firstName,

@@ -30,7 +30,8 @@ export class AddPersonToEventUseCase extends UseCaseBase {
   }
 
   override async handler(params: IAddPersonToEventRequest): Promise<EventPerson[]> {
-    const event = await this.validationService.validateEvent(params.eventId) as Event
+
+    const event = await this.validationService.validateEventBySlug(params.eventId) as Event
     const persons = await this.personService.findByEmailOrInsert(params.persons)
 
     const eventPersonsBuilded: EventPersonEntity[] = this.buildEventPersons(persons, event)

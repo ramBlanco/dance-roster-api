@@ -7,14 +7,16 @@ import { StoreEventRequest } from '../../domain/interfaces/requests/events/store
 import { EventViewUseCase } from '../../application/useCases/events/eventViewUseCase '
 import { IEventIndexRequest } from '../../domain/interfaces/requests/events/indexEventRequest'
 import { AddPersonToEventUseCase } from '../../application/useCases/events/addPersonToEventUseCase'
-import { IStorePersonRequest } from '~src/domain/interfaces/requests/persons/storePersonRequest'
+import { IStorePersonRequest } from '../../domain/interfaces/requests/persons/storePersonRequest'
+import { GetPersonFromEventUseCase } from '../../application/useCases/events/getPersonFromEventUseCase'
+import { IEventPersonIndexRequest } from '../../domain/interfaces/requests/events/getPersonFromEventRequest'
 
 class EventController {
   static async index(request: FastifyRequest<{ Querystring: IEventIndexRequest }>, reply: FastifyReply) {
     const getEventIndexUseCase = app.instance.diContainer.resolve<EventIndexUseCase>(INJECTIONS.useCases.events.indexUseCase)
     const events = await getEventIndexUseCase.handler(request.query)
 
-    return reply.sendPaginationResponseData(events)
+    return reply.sendPaginationResponseData(events.rows, events.count)
   }
 
   static async store(request: FastifyRequest<{ Body: StoreEventRequest }>, reply: FastifyReply) {
@@ -29,7 +31,7 @@ class EventController {
     return reply.code(200).send(event)
   }
 
-  static async addPerson(request: FastifyRequest<{ Params: { id: string }, Body: IStorePersonRequest }>, reply: FastifyReply) {
+  static async addPersons(request: FastifyRequest<{ Params: { id: string }, Body: IStorePersonRequest }>, reply: FastifyReply) {
     const addPersonToEventUseCase = app.instance.diContainer.resolve<AddPersonToEventUseCase>(INJECTIONS.useCases.events.addPersonToEventUseCase)
     const persons = await addPersonToEventUseCase.handler(
       {
@@ -38,6 +40,14 @@ class EventController {
       }
     )
     return reply.code(200).send(persons)
+  }
+
+  static async getPersons(request: FastifyRequest<{ Params: { id: string }, Querystring: IEventPersonIndexRequest }>, reply: FastifyReply) {
+    const getPersonToEventUseCase = app.instance.diContainer.resolve<GetPersonFromEventUseCase>(INJECTIONS.useCases.events.getPersonFromEventUseCase)
+    const persons = await getPersonToEventUseCase.handler({
+      eventId: request.params.id,
+    })
+    return reply.sendPaginationResponseData(persons)
   }
 
   static async update(_request: FastifyRequest, reply: FastifyReply) {

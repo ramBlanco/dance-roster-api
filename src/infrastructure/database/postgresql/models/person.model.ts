@@ -1,5 +1,7 @@
-import { Model, InferAttributes, InferCreationAttributes, Sequelize, CreationOptional } from 'sequelize';
+import { Model, InferAttributes, InferCreationAttributes, Sequelize, CreationOptional, NonAttribute } from 'sequelize';
 import { DataType } from 'sequelize-typescript';
+import { EventPerson } from './eventPerson.model';
+import { Event } from './event.model';
 
 export class Person extends Model<InferAttributes<Person>, InferCreationAttributes<Person>> {
   declare id: CreationOptional<string>
@@ -7,7 +9,9 @@ export class Person extends Model<InferAttributes<Person>, InferCreationAttribut
   declare email: string
   declare firstName: string
   declare lastName: string
-  
+
+  // declare events?: NonAttribute<Event[]>;
+
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare deletedAt: CreationOptional<Date>;
@@ -18,12 +22,11 @@ export const loadPersonModel = (db: Sequelize) => {
     {
       id: {
         type: DataType.UUID,
-        autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
       birthDate: {
-        field:'birth_date',
+        field: 'birth_date',
         type: DataType.DATE,
         allowNull: false,
       },
@@ -32,7 +35,7 @@ export const loadPersonModel = (db: Sequelize) => {
         allowNull: false
       },
       firstName: {
-        field:'first_name',
+        field: 'first_name',
         type: DataType.STRING,
         allowNull: false
       },
@@ -58,6 +61,7 @@ export const loadPersonModel = (db: Sequelize) => {
       },
     },
     {
+      modelName: 'person',
       timestamps: true,
       paranoid: true,
       tableName: 'persons',
@@ -66,4 +70,7 @@ export const loadPersonModel = (db: Sequelize) => {
   )
 }
 
+export const loadPersonRelations = () => {
+  Person.belongsToMany(Event, { through: EventPerson, foreignKey: 'personId' })
+}
 

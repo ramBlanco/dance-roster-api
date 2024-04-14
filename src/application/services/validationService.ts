@@ -48,4 +48,14 @@ export class ValidationService {
       return null
     }
   }
+
+  public async validateEventBySlug(slug: string): Promise<Event | null> {
+    try {
+      const eventBySlug = await this.eventRepository.viewBySlug(slug)
+      const [event] = eventBySlug.rows
+      return event
+    } catch (error) {
+      return null
+    }
+  }
 }

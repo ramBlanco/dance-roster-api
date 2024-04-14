@@ -1,8 +1,4 @@
 import { IQueryFilterHandlerResponse } from "../../domain/interfaces/strategies/queryFilter/queryFilterHandlerResponseInterface";
-import { PersonEntity } from "../../domain/entities/personEntity";
-import { PersonRepository } from "../../infrastructure/repositories/personRepository";
-import { Person } from "../../infrastructure/database/postgresql/models/person.model";
-import { HttpConflict } from "../libraries/httpErrors";
 import { EventPersonRepository } from "../../infrastructure/repositories/eventPersonRepository";
 import { EventPerson } from "../../infrastructure/database/postgresql/models/eventPerson.model";
 import { EventPersonEntity } from "../../domain/entities/eventPersonEntity";
@@ -11,6 +7,14 @@ export class EventPersonService {
   constructor(
     private readonly eventPersonRepository: EventPersonRepository
   ) { }
+
+  async getEventPersonsByFilter(filters: IQueryFilterHandlerResponse): Promise<EventPerson[]> {
+    return await this.eventPersonRepository.getAll({
+      where: filters.where,
+      offset: filters.pagination.offset,
+      limit: filters.pagination.pageSize
+    })
+  }
 
   private async storeIfNotExist(person: EventPersonEntity): Promise<EventPerson> {
     const personExistInEvent = await this.eventPersonRepository.findPersonInEvent(person)

@@ -54,7 +54,17 @@ class EventRoute implements IRoute {
           body: AddPersonToEventRequestSchema,
         },
       },
-      EventController.addPerson,
+      EventController.addPersons,
+    )
+
+    fastify.get(
+      '/:id/persons',
+      {
+        schema: {
+          description: localeService.translate('routes.event.getPersons.description'),
+        },
+      },
+      EventController.getPersons,
     )
 
     //TODO: add event controller method

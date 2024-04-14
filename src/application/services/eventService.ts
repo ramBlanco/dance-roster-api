@@ -2,11 +2,12 @@ import { EventsRepository } from "../../infrastructure/repositories/eventReposit
 import { IQueryFilterHandlerResponse } from "../../domain/interfaces/strategies/queryFilter/queryFilterHandlerResponseInterface";
 import { EventEntity } from "../../domain/entities/eventEntity";
 import { Event } from "../../infrastructure/database/postgresql/models/event.model";
+import { IPaginationResponseRepository } from "../../domain/interfaces/paginationResponseRepositoryInterface";
 
 export class EventService {
   constructor(private readonly eventRepository: EventsRepository) { }
 
-  async getEventsByFilter(filters: IQueryFilterHandlerResponse): Promise<Event[]> {
+  async getEventsByFilter(filters: IQueryFilterHandlerResponse): Promise<IPaginationResponseRepository<Event>> {
     return await this.eventRepository.getEvents({
       where: filters.where,
       offset: filters.pagination.offset,
@@ -24,6 +25,8 @@ export class EventService {
   }
 
   async viewEvent(id: string): Promise<EventEntity> {
-    return await this.eventRepository.view(id)
+    const events = await this.eventRepository.viewBySlug(id)
+    const [event] = events.rows
+    return event
   }
 }
