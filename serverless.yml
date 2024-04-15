@@ -1,0 +1,31 @@
+service: bailelog-api
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  stage: dev
+  runtime: nodejs18.x
+  profile: bailelog-profile
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: 
+        - apigateway:POST
+        - apigateway:GET
+        - apigateway:PUT
+        - apigateway:DELETE
+        - apigateway:OPTIONS
+      Resource: "*"
+
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+functions:
+  api:
+    handler: src/serverless.handler
+    timeout: 25
+    events:
+      - http:
+          path: "/{proxy+}"
+          method: any

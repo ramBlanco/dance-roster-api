@@ -10,6 +10,9 @@ function genericPlugin(fastifyInstance: FastifyInstance, _opts: Record<never, ne
   })
 
   fastifyInstance.setErrorHandler((err, _req, reply) => {
+
+    console.error(err)
+
     if (err.statusCode === 429) {
       reply.code(429)
       err.message = 'You hit the rate limit!'

@@ -4,6 +4,9 @@ export const INJECTIONS = {
   LOCALE_SERVICE: 'localeService',
   LOGIN_USE_CASE: 'loginUseCase',
 
+  adapters: {
+    databaseAdapter: 'databaseAdapter'
+  },
   repositories: {
     eventRepository: 'eventRepository',
     studentRepository: 'studentRepository',

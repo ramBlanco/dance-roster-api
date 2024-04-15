@@ -1,18 +1,22 @@
-import App from './infrastructure/webserver/server'
-import AuthRoute from './interface/routes/authRoute'
-import EventRoute from './interface/routes/eventRoute'
-import IndexRoute from './interface/routes/indexRoute'
-import LocationRoute from './interface/routes/locationRoute'
-import StatusRoute from './interface/routes/statusRoute'
+import { FastifyInstance } from 'fastify';
+import { buildApp } from './app'
+import config from './infrastructure/config/config';
 
-export const app = new App({
-  routes: [
-    new StatusRoute(), 
-    new AuthRoute(), 
-    new IndexRoute(), 
-    new EventRoute(),
-    new LocationRoute(),
-  ],
-})
+async function main(): Promise<FastifyInstance> {
+  const app = await buildApp()
+  await app
+    .listen({
+      port: config.api.port,
+      host: config.api.domainName,
+    })
+    .catch((err) => {
+      app.log.fatal({ msg: `Application startup error`, err })
+    })
+    .then(() => {
+      console.log(`App listening on the http://${config.api.domainName}:${config.api.port} 🚀`)
+    })
 
-app.listen()
+  return app
+}
+
+main().catch((err) => console.error(err))

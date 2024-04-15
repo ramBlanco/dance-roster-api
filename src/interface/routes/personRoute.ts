@@ -1,19 +1,19 @@
 import { FastifyInstance, FastifyPluginOptions } from 'fastify'
 import { LocaleService } from '../../application/services/localeService'
 import { INJECTIONS } from '../../infrastructure/config/dependencyInjection/di'
-import { app } from '../../server'
 import { IRoute } from '../../domain/interfaces/routeInterface'
 import { getSchemasResponse } from '../../domain/validation/generic'
 import PersonController from '../controllers/personController'
 import { StorePersonResponseSchema, StorePersonSchema } from '../../domain/validation/persons/storePersonSchemaRequest'
 import { PersonObjectSchema } from '../../domain/validation/persons/personSchema'
 import { PersonIndexResponseSchema } from '../../domain/validation/persons/indexPersonRequest'
+import { diContainer } from '@fastify/awilix'
 
 class PersonRoute implements IRoute {
   public prefixRoute = 'v1/person'
 
   async routes(fastify: FastifyInstance, _options: FastifyPluginOptions, _done: any): Promise<void> {
-    const localeService = app.instance.diContainer.resolve<LocaleService>(INJECTIONS.LOCALE_SERVICE)
+    const localeService = diContainer.resolve<LocaleService>(INJECTIONS.LOCALE_SERVICE)
 
     fastify.get(
       '/',

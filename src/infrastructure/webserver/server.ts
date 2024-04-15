@@ -14,49 +14,45 @@ import ReateLimitPlugin from "../plugins/02-reateLimitPlugin";
 import DiPlugin from "../plugins/03-diPlugin";
 import JwtPlugin from "../plugins/04-jwtPlugin";
 import SquelizePlugin from "../plugins/05-squelizePlugin";
+import { DatabaseAdapter } from '../../application/adapters/databaseAdapter'
 
 Morgan.token('remote-addr', (req, _res) => {
   return req.headers['x-forwarded-for'] ? (req.headers['x-forwarded-for'] as string) : req.socket.remoteAddress
 })
 
-class App {
-  public instance: FastifyInstance
+class AppServer {
+  private instance: FastifyInstance
   public app_domain: string = config.api.domainName
   public app_port: number = config.api.port
 
-  constructor(appConfig: { routes: IRoute[] }) {
-    registerDependencies()
-
+  constructor() {
     this.instance = fastify({ logger: envToLogger[config.api.logger as ENVIRONMENTS] })
+  }
 
-    // schemas for request
+  async build(appConfig: { routes: IRoute[] }): Promise<FastifyInstance> {
+    registerDependencies()
     registerSchemas(this.instance)
 
     // this.instance.register(autoLoad, { dir: join(__dirname, '../', 'plugins') })
 
-    this.instance.register(GenericPlugin)
-    this.instance.register(SwagggerPlugin)
-    this.instance.register(ReateLimitPlugin)
-    this.instance.register(DiPlugin)
-    this.instance.register(JwtPlugin)
-    this.instance.register(SquelizePlugin)
+    // await this.instance.register(SquelizePlugin)
 
-    appConfig.routes.forEach((route) => this.instance.register(route.routes, { prefix: route.prefixRoute }))
-  }
+    await Promise.all([
+      this.instance.register(GenericPlugin),
+      this.instance.register(SwagggerPlugin),
+      this.instance.register(ReateLimitPlugin),
+      this.instance.register(DiPlugin),
+      this.instance.register(JwtPlugin),
+    ])
 
-  public listen() {
-    this.instance
-      .listen({
-        port: this.app_port,
-        host: this.app_domain,
-      })
-      .catch((err) => {
-        this.instance.log.fatal({ msg: `Application startup error`, err })
-      })
-      .then(() => {
-        console.log(`App listening on the http://${this.app_domain}:${this.app_port} 🚀`)
-      })
+    await Promise.all(appConfig.routes.map((route) => this.instance.register(route.routes, { prefix: route.prefixRoute })))
+
+    // Init database
+    const databaseAdapter = new DatabaseAdapter()
+    await databaseAdapter.connect()
+
+    return this.instance
   }
 }
 
-export default App
+export default AppServer

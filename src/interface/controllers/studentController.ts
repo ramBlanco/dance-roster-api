@@ -1,11 +1,11 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { app } from '../../server'
 import { INJECTIONS } from '../../infrastructure/config/dependencyInjection/di'
 import { StudentIndexUseCase } from '../../application/useCases/students/studentIndexUseCase'
+import { diContainer } from '@fastify/awilix'
 
 class StudentController {
   static async index(_request: FastifyRequest, reply: FastifyReply) {
-    const indexUseCase = app.instance.diContainer.resolve<StudentIndexUseCase>(INJECTIONS.useCases.students.indexUseCase)
+    const indexUseCase = diContainer.resolve<StudentIndexUseCase>(INJECTIONS.useCases.students.indexUseCase)
     const events = await indexUseCase.handler({})
 
     return reply.sendPaginationResponseData(events)

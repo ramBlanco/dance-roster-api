@@ -12,31 +12,36 @@ import { tenantDependency } from './tenantDependency'
 import { eventPersonDependency } from './eventPersonDependency'
 
 export function registerDependencies(): void {
-  diContainer.register({ [INJECTIONS.LOCALE_SERVICE]: asFunction(() => new LocaleService(), { lifetime: Lifetime.SCOPED }) })
-  diContainer.register({
-    [INJECTIONS.services.validationService]: asFunction(
-      (
-        {
+  try {
+    
+    // diContainer.register({ [INJECTIONS.LOCALE_SERVICE]: asFunction(() => new LocaleService(), { lifetime: Lifetime.SCOPED }) })
+    diContainer.register({
+      [INJECTIONS.services.validationService]: asFunction(
+        (
+          {
+            locationRepository,
+            tenantRepository,
+            personRepository,
+            eventRepository
+          }
+        ) => new ValidationService(
           locationRepository,
           tenantRepository,
           personRepository,
           eventRepository
-        }
-      ) => new ValidationService(
-        locationRepository,
-        tenantRepository,
-        personRepository,
-        eventRepository
-      ),
-      { lifetime: Lifetime.SCOPED }
-    )
-  })
-
-  eventDependency(diContainer)
-  locationDependency(diContainer)
-  personDependency(diContainer)
-  studentDependency(diContainer)
-  userDependency(diContainer)
-  tenantDependency(diContainer)
-  eventPersonDependency(diContainer)
+        ),
+        { lifetime: Lifetime.SCOPED }
+      )
+    })
+  
+    eventDependency(diContainer)
+    locationDependency(diContainer)
+    personDependency(diContainer)
+    studentDependency(diContainer)
+    userDependency(diContainer)
+    tenantDependency(diContainer)
+    eventPersonDependency(diContainer)
+  } catch (error) {
+    console.error(error)
+  }
 }

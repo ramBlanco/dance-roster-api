@@ -1,15 +1,15 @@
 import { FastifyInstance, FastifyPluginOptions } from 'fastify'
 import { LocaleService } from '../../application/services/localeService'
 import { INJECTIONS } from '../../infrastructure/config/dependencyInjection/di'
-import { app } from '../../server'
 import { IRoute } from '../../domain/interfaces/routeInterface'
 import StudentController from '../controllers/studentController'
+import { diContainer } from '@fastify/awilix'
 
 class StudentRoute implements IRoute {
   public prefixRoute = 'v1/students'
 
   async routes(fastify: FastifyInstance, _options: FastifyPluginOptions, _done: any): Promise<void> {
-    const localeService = app.instance.diContainer.resolve<LocaleService>(INJECTIONS.LOCALE_SERVICE)
+    const localeService = diContainer.resolve<LocaleService>(INJECTIONS.LOCALE_SERVICE)
 
     fastify.get(
       '/',

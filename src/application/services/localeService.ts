@@ -9,11 +9,16 @@ export class LocaleService {
 
   constructor() {
     this.i18nProvider = new I18n()
+    this.build()
+  }
+
+  private build(): void {
     this.i18nProvider.configure({
       locales: ['en'],
       defaultLocale: 'en',
       directory: join(__dirname, '../../', 'locale'),
       objectNotation: true,
+      updateFiles: false
     })
   }
   /**

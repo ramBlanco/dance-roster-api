@@ -4,13 +4,13 @@ import { IRoute } from '../../domain/interfaces/routeInterface'
 import { LoginResponseSchema, LoginSchema } from '../../domain/validation/authRequest'
 import { getSchemasResponse } from '../../domain/validation/generic'
 import { INJECTIONS } from '../../infrastructure/config/dependencyInjection/di'
-import { app } from '../../server'
 import AuthController from '../controllers/authController'
+import { diContainer } from '@fastify/awilix'
 
 class AuthRoute implements IRoute {
   prefixRoute = 'v1/auth'
   async routes(fastify: FastifyInstance, _options: FastifyPluginOptions, _done: any): Promise<void> {
-    const localeService = app.instance.diContainer.resolve<LocaleService>(INJECTIONS.LOCALE_SERVICE)
+    const localeService = diContainer.resolve<LocaleService>(INJECTIONS.LOCALE_SERVICE)
 
     fastify.post(
       '/login',

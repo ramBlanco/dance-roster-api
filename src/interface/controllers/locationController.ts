@@ -1,27 +1,27 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { app } from '../../server'
 import { INJECTIONS } from '../../infrastructure/config/dependencyInjection/di'
 import { LocationIndexUseCase } from '../../application/useCases/locations/locationIndexUseCase'
 import { ILocationIndexRequest } from '../../domain/interfaces/requests/locations/indexLocationRequest'
 import { LocationStoreUseCase } from '../../application/useCases/locations/locationStoreUseCase'
 import { StoreLocationRequest } from '../../domain/interfaces/requests/locations/storeLocationRequest'
 import { LocationViewUseCase } from '../../application/useCases/locations/locationViewUseCase '
+import { diContainer } from '@fastify/awilix'
 
 class LocationController {
   static async index(request: FastifyRequest<{ Querystring: ILocationIndexRequest }>, reply: FastifyReply) {
-    const locationIndexUseCase = app.instance.diContainer.resolve<LocationIndexUseCase>(INJECTIONS.useCases.locations.indexUseCase)
+    const locationIndexUseCase = diContainer.resolve<LocationIndexUseCase>(INJECTIONS.useCases.locations.indexUseCase)
     const locations = await locationIndexUseCase.handler(request.query)
     return reply.sendPaginationResponseData(locations)
   }
 
   static async store(request: FastifyRequest<{ Body: StoreLocationRequest }>, reply: FastifyReply) {
-    const locationStoreUseCase = app.instance.diContainer.resolve<LocationStoreUseCase>(INJECTIONS.useCases.locations.storeUseCase)
+    const locationStoreUseCase = diContainer.resolve<LocationStoreUseCase>(INJECTIONS.useCases.locations.storeUseCase)
     const location = await locationStoreUseCase.handler(request.body)
     return reply.code(200).send(location)
   }
 
   static async view(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
-    const locationViewUseCase = app.instance.diContainer.resolve<LocationViewUseCase>(INJECTIONS.useCases.locations.viewUseCase)
+    const locationViewUseCase = diContainer.resolve<LocationViewUseCase>(INJECTIONS.useCases.locations.viewUseCase)
     const location = await locationViewUseCase.handler(request.params.id)
     return reply.code(200).send(location)
   }

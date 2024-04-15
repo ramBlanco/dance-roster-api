@@ -1,17 +1,17 @@
 import { FastifyInstance, FastifyPluginOptions } from 'fastify'
 import { LocaleService } from '../../application/services/localeService'
 import { INJECTIONS } from '../../infrastructure/config/dependencyInjection/di'
-import { app } from '../../server'
 import { IRoute } from '../../domain/interfaces/routeInterface'
 import { getSchemasResponse } from '../../domain/validation/generic'
 import LocationController from '../controllers/locationController'
 import { StoreLocationResponseSchema, StoreLocationSchema } from '../../domain/validation/locations/storeLocationSchemaRequest'
+import { diContainer } from '@fastify/awilix'
 
 class LocationRoute implements IRoute {
   public prefixRoute = 'v1/location'
 
   async routes(fastify: FastifyInstance, _options: FastifyPluginOptions, _done: any): Promise<void> {
-    const localeService = app.instance.diContainer.resolve<LocaleService>(INJECTIONS.LOCALE_SERVICE)
+    const localeService = diContainer.resolve<LocaleService>(INJECTIONS.LOCALE_SERVICE)
 
     fastify.get(
       '/',
