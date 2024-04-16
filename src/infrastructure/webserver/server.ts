@@ -15,6 +15,7 @@ import DiPlugin from "../plugins/03-diPlugin";
 import JwtPlugin from "../plugins/04-jwtPlugin";
 import SquelizePlugin from "../plugins/05-squelizePlugin";
 import { DatabaseAdapter } from '../../application/adapters/databaseAdapter'
+import { AppSingleton } from './appSingleton'
 
 Morgan.token('remote-addr', (req, _res) => {
   return req.headers['x-forwarded-for'] ? (req.headers['x-forwarded-for'] as string) : req.socket.remoteAddress
@@ -50,7 +51,7 @@ class AppServer {
     // Init database
     const databaseAdapter = new DatabaseAdapter()
     await databaseAdapter.connect()
-
+    AppSingleton.setInstance(this.instance, true)
     return this.instance
   }
 }

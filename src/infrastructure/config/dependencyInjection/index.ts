@@ -10,6 +10,7 @@ import { studentDependency } from './studentDependecy'
 import { userDependency } from './userDependency'
 import { tenantDependency } from './tenantDependency'
 import { eventPersonDependency } from './eventPersonDependency'
+import { authDependency } from './authDependency'
 
 export function registerDependencies(): void {
   try {
@@ -33,7 +34,7 @@ export function registerDependencies(): void {
         { lifetime: Lifetime.SCOPED }
       )
     })
-  
+    authDependency(diContainer)
     eventDependency(diContainer)
     locationDependency(diContainer)
     personDependency(diContainer)

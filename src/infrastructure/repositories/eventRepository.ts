@@ -20,7 +20,10 @@ export class EventsRepository {
       include: {
         model: Location,
         required: true
-      }
+      },
+      order: [
+        ['date', 'DESC']
+      ]
     })
   }
 

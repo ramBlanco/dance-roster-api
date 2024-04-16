@@ -11,13 +11,13 @@ class LocationRoute implements IRoute {
   public prefixRoute = 'v1/location'
 
   async routes(fastify: FastifyInstance, _options: FastifyPluginOptions, _done: any): Promise<void> {
-    const localeService = diContainer.resolve<LocaleService>(INJECTIONS.LOCALE_SERVICE)
+    // const localeService = diContainer.resolve<LocaleService>(INJECTIONS.LOCALE_SERVICE)
 
     fastify.get(
       '/',
       {
         schema: {
-          description: localeService.translate('routes.location.index.description'),
+          // description: localeService.translate('routes.location.index.description'),
         },
       },
       LocationController.index,
@@ -27,7 +27,7 @@ class LocationRoute implements IRoute {
       '/',
       {
         schema: {
-          description: localeService.translate('routes.location.store.description'),
+          // description: localeService.translate('routes.location.store.description'),
           body: StoreLocationSchema,
           response: getSchemasResponse(StoreLocationResponseSchema),
         },
@@ -39,7 +39,7 @@ class LocationRoute implements IRoute {
       '/:id',
       {
         schema: {
-          description: localeService.translate('routes.location.view.description'),
+          // description: localeService.translate('routes.location.view.description'),
         },
       },
       LocationController.view,
@@ -50,7 +50,7 @@ class LocationRoute implements IRoute {
       '/:id',
       {
         schema: {
-          description: localeService.translate('routes.location.update.description'),
+          // description: localeService.translate('routes.location.update.description'),
         },
       },
       LocationController.update,
@@ -61,7 +61,7 @@ class LocationRoute implements IRoute {
       '/:id',
       {
         schema: {
-          description: localeService.translate('routes.location.delete.description'),
+          // description: localeService.translate('routes.location.delete.description'),
         },
       },
       LocationController.delete,

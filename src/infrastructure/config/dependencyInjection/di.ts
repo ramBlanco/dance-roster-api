@@ -3,6 +3,7 @@ export const INJECTIONS = {
   USER_SERVICE: 'userService',
   LOCALE_SERVICE: 'localeService',
   LOGIN_USE_CASE: 'loginUseCase',
+  REFRESH_TOKEN_USE_CASE: 'refreshTokenUseCase',
 
   adapters: {
     databaseAdapter: 'databaseAdapter'

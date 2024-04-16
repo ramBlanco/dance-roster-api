@@ -10,17 +10,23 @@ import { IStorePersonRequest } from '../../domain/interfaces/requests/persons/st
 import { GetPersonFromEventUseCase } from '../../application/useCases/events/getPersonFromEventUseCase'
 import { IEventPersonIndexRequest } from '../../domain/interfaces/requests/events/getPersonFromEventRequest'
 import { diContainer } from '@fastify/awilix'
+import { SignParamsWithJWT } from '../../domain/interfaces/jwtInterfaces'
 
 class EventController {
-  static async index(request: FastifyRequest<{ Querystring: IEventIndexRequest }>, reply: FastifyReply) {
+  static async index(request: FastifyRequest<{ Querystring: IEventIndexRequest, User: SignParamsWithJWT }>, reply: FastifyReply) {
     const getEventIndexUseCase = diContainer.resolve<EventIndexUseCase>(INJECTIONS.useCases.events.indexUseCase)
-    const events = await getEventIndexUseCase.handler(request.query)
+    const events = await getEventIndexUseCase.handler({
+      filters: request.query,
+      userSession: request.user as SignParamsWithJWT
+    })
 
     return reply.sendPaginationResponseData(events.rows, events.count)
   }
 
-  static async store(request: FastifyRequest<{ Body: StoreEventRequest }>, reply: FastifyReply) {
+  static async store(request: FastifyRequest<{ Body: StoreEventRequest, User: SignParamsWithJWT }>, reply: FastifyReply) {
     const eventStoreUseCase = diContainer.resolve<EventStoreUseCase>(INJECTIONS.useCases.events.storeUseCase)
+    request.body.tenantId = (request.user as SignParamsWithJWT).tenantId
+
     const event = await eventStoreUseCase.handler(request.body)
     return reply.code(200).send(event)
   }

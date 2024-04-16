@@ -4,7 +4,7 @@ import S from 'fluent-json-schema'
 export const StoreLocationSchema = S.object()
   .id('StoreLocation')
   .prop('name', S.string().required().description('name'))
-  .prop('tenantId', S.string().required().description('tenant'))
+  // .prop('tenantId', S.string().required().description('tenant'))
   .prop('address', S.string().required().description('address'))
   .title('StoreLocationTitle')
 

@@ -1,5 +1,6 @@
 import { Model, InferAttributes, InferCreationAttributes, Sequelize, CreationOptional } from 'sequelize';
 import { DataType } from 'sequelize-typescript';
+import { User } from './user.model';
 
 export class Tenant extends Model<InferAttributes<Tenant>, InferCreationAttributes<Tenant>> {
   declare id: CreationOptional<string>
@@ -48,4 +49,7 @@ export const loadTenantModel = (db: Sequelize) => {
   )
 }
 
+export const loadTenantRelations = () => {
+  Tenant.hasOne(User, { sourceKey: 'id', foreignKey: 'tenantId' });
+}
 

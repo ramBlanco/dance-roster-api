@@ -11,10 +11,10 @@ export async function buildApp(): Promise<FastifyInstance> {
   return await appFactory.build({
     routes: [
       new StatusRoute(),
-      // new AuthRoute(),
+      new AuthRoute(),
       // new IndexRoute(),
       new EventRoute(),
-      // new LocationRoute(),
+      new LocationRoute(),
     ],
   });
 };

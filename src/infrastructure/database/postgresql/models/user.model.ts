@@ -1,7 +1,8 @@
-import { Model, InferAttributes, InferCreationAttributes, Sequelize, CreationOptional } from 'sequelize';
+import { Model, InferAttributes, InferCreationAttributes, Sequelize, CreationOptional, Association, NonAttribute } from 'sequelize';
 import { DataType } from 'sequelize-typescript';
+import { Tenant } from './tenant.model';
 
-export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+export class User extends Model<InferAttributes<User,  { omit: 'tenant' }>, InferCreationAttributes<User,  { omit: 'tenant' }>> {
   declare id: CreationOptional<string>
   declare username: string;
   declare password: string;
@@ -9,9 +10,16 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare verifiedAt: CreationOptional<Date>;
   declare verifyToken: CreationOptional<string>;
   declare verifyExpiryAt: CreationOptional<Date>;
+
+  declare tenant?: NonAttribute<Tenant>;
+ 
+  declare static associations: {
+    tenant: Association<Tenant>;
+  };
   
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
+  declare deletedAt: CreationOptional<Date>;
 }
 
 export const loadUserModel = (db: Sequelize) => {
@@ -65,6 +73,11 @@ export const loadUserModel = (db: Sequelize) => {
         allowNull: true,
         field: 'updated_at'
       },
+      deletedAt: {
+        type: DataType.DATE,
+        allowNull: true,
+        field: 'deleted_at'
+      },
     },
     {
       timestamps: true,
@@ -75,4 +88,7 @@ export const loadUserModel = (db: Sequelize) => {
   )
 }
 
+export const loadUserRelations = () => {
+  User.belongsTo(Tenant, { targetKey: 'id', foreignKey: 'tenantId', as: 'tenant' });
+}
 

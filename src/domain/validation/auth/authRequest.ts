@@ -9,13 +9,18 @@ export const LoginSchema = S.object()
   .required()
   .title('LoginTitle')
 
-export const LoginResponseSchema = S.object()
+
+  export const LoginResponseSchema = S.object()
   .id('LoginResponse')
-  .prop('email', S.string().format(S.FORMATS.EMAIL))
+  .prop('user', S.object().prop('id', S.string()).prop('username', S.string().format(S.FORMATS.EMAIL)).prop('tenant', S.object().ref('TenantObject#')))
+  .required()
+  .prop('token', S.string())
+  .required()
+  .prop('refreshToken', S.string())
   .required()
   .title('LoginResponseTitle')
 
-export const AuthSchema = (fastify: FastifyInstance): void => {
+export const AuthLoginSchema = (fastify: FastifyInstance): void => {
   fastify.addSchema(LoginSchema)
   fastify.addSchema(LoginResponseSchema)
 }

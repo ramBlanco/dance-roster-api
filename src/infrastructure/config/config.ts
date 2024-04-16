@@ -14,6 +14,9 @@ export default {
   },
   security: {
     jwtSecret: process.env.SECURITY_SECRET || 'secret',
+    tokenExpiry: process.env.TOKEN_EXPIRY || '1 day',
+    tokenExpiryRefresh: process.env.TOKEN_EXPIRY_REFRESH || '3 day',
+    authHash: process.env.SECURITY_HASH_SECRET || 'secret'
   },
   database: {
     postgresPassword: process.env.POSTGRES_PASSWORD || '',

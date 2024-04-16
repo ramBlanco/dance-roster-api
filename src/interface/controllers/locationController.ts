@@ -6,6 +6,7 @@ import { LocationStoreUseCase } from '../../application/useCases/locations/locat
 import { StoreLocationRequest } from '../../domain/interfaces/requests/locations/storeLocationRequest'
 import { LocationViewUseCase } from '../../application/useCases/locations/locationViewUseCase '
 import { diContainer } from '@fastify/awilix'
+import { SignParamsWithJWT } from '~src/domain/interfaces/jwtInterfaces'
 
 class LocationController {
   static async index(request: FastifyRequest<{ Querystring: ILocationIndexRequest }>, reply: FastifyReply) {
@@ -14,8 +15,10 @@ class LocationController {
     return reply.sendPaginationResponseData(locations)
   }
 
-  static async store(request: FastifyRequest<{ Body: StoreLocationRequest }>, reply: FastifyReply) {
+  static async store(request: FastifyRequest<{ Body: StoreLocationRequest, User: SignParamsWithJWT }>, reply: FastifyReply) {
     const locationStoreUseCase = diContainer.resolve<LocationStoreUseCase>(INJECTIONS.useCases.locations.storeUseCase)
+    const user = request.user as SignParamsWithJWT
+    request.body.tenantId = user.tenantId
     const location = await locationStoreUseCase.handler(request.body)
     return reply.code(200).send(location)
   }
