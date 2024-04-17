@@ -51,7 +51,7 @@ class AuthRoute implements IRoute {
       AuthController.login,
     )
 
-    fastify.post(
+    fastify.get(
       '/refresh',
       {
         schema: {

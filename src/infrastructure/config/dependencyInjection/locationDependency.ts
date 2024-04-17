@@ -5,6 +5,7 @@ import { LocationsRepository } from "../../../infrastructure/repositories/locati
 import { LocationIndexUseCase } from "../../../application/useCases/locations/locationIndexUseCase";
 import { LocationStoreUseCase } from "../../../application/useCases/locations/locationStoreUseCase";
 import { LocationViewUseCase } from "../../../application/useCases/locations/locationViewUseCase ";
+import { LocationDeleteUseCase } from "../../../application/useCases/locations/locationDeleteUseCase";
 
 export function locationDependency(container: AwilixContainer): void {
   container.register({
@@ -36,6 +37,13 @@ export function locationDependency(container: AwilixContainer): void {
   container.register({
     [INJECTIONS.useCases.locations.viewUseCase]: asFunction(
       ({ locationService }) => new LocationViewUseCase(locationService),
+      { lifetime: Lifetime.SCOPED }
+    )
+  })
+
+  container.register({
+    [INJECTIONS.useCases.locations.deleteUseCase]: asFunction(
+      ({ locationService }) => new LocationDeleteUseCase(locationService),
       { lifetime: Lifetime.SCOPED }
     )
   })

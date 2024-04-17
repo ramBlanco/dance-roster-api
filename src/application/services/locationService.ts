@@ -25,4 +25,8 @@ export class LocationService {
   async viewLocation(id: string): Promise<Location> {
     return await this.locationRepository.view(id)
   }
+
+  async deleteLocation(id: string, tenantId: string): Promise<void> {
+    await this.locationRepository.delete(id, tenantId)
+  }
 }

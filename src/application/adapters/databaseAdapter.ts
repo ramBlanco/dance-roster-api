@@ -17,4 +17,5 @@ export class DatabaseAdapter {
       console.error(`Connection could not be established: ${err}`)
     }
   }
+  
 }

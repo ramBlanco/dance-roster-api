@@ -11,9 +11,13 @@ export class LocationIndexUseCase extends UseCaseBase {
     super()
   }
 
-  override async handler(params: IEventIndexRequest): Promise<Location[]> {
+  override async handler(params: {
+    query: IEventIndexRequest,
+    tenantId: string
+  }): Promise<Location[]> {
     const queryFilterHandler = new QueryFilterHandler()
-    const filters = queryFilterHandler.getParams<IEventIndexRequest>(params)
+    const filters = queryFilterHandler.getParams<IEventIndexRequest>(params.query)
+    filters.where = { ...filters.where, tenantId: params.tenantId }
     const locations = await this.locationService.getAllByFilter(filters)
     return locations
   }

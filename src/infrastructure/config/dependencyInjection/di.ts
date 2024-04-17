@@ -39,6 +39,7 @@ export const INJECTIONS = {
       indexUseCase: 'locationIndexUseCase',
       storeUseCase: 'locationStoreUseCase',
       viewUseCase: 'locationViewUseCase',
+      deleteUseCase: 'locationDeleteViewCase'
     },
     persons: {
       indexUseCase: 'personIndexUseCase',

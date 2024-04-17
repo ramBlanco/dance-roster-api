@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto'
 import { HttpNotFound } from '../../application/libraries/httpErrors'
 import { Event } from '../database/postgresql/models/event.model'
 import { Location } from '../database/postgresql/models/location.model'
+import { Sequelize } from 'sequelize'
 
 export class LocationsRepository {
   public async getAll(params: {
@@ -32,5 +33,13 @@ export class LocationsRepository {
     })
     if (!event) throw new HttpNotFound("LOCATION NOT FOUND")
     return event
+  }
+
+  public async delete(id: string, tenantId: string): Promise<number> {
+    const location = await Location.destroy({
+      where: { id: id, tenantId: tenantId },
+    })
+    if (location == 0) throw new HttpNotFound("LOCATION NOT FOUND")
+    return location
   }
 }

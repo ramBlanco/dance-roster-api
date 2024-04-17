@@ -56,7 +56,6 @@ class LocationRoute implements IRoute {
       LocationController.update,
     )
 
-    //TODO: add event controller method
     fastify.delete(
       '/:id',
       {

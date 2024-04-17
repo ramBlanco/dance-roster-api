@@ -7,11 +7,16 @@ import { StoreLocationRequest } from '../../domain/interfaces/requests/locations
 import { LocationViewUseCase } from '../../application/useCases/locations/locationViewUseCase '
 import { diContainer } from '@fastify/awilix'
 import { SignParamsWithJWT } from '~src/domain/interfaces/jwtInterfaces'
+import { LocationDeleteUseCase } from '~src/application/useCases/locations/locationDeleteUseCase'
 
 class LocationController {
-  static async index(request: FastifyRequest<{ Querystring: ILocationIndexRequest }>, reply: FastifyReply) {
+  static async index(request: FastifyRequest<{ Querystring: ILocationIndexRequest, User: SignParamsWithJWT }>, reply: FastifyReply) {
     const locationIndexUseCase = diContainer.resolve<LocationIndexUseCase>(INJECTIONS.useCases.locations.indexUseCase)
-    const locations = await locationIndexUseCase.handler(request.query)
+    const user = request.user as SignParamsWithJWT
+    const locations = await locationIndexUseCase.handler({
+      query: request.query as ILocationIndexRequest,
+      tenantId: user.tenantId 
+    })
     return reply.sendPaginationResponseData(locations)
   }
 
@@ -33,8 +38,14 @@ class LocationController {
     return reply.code(200).send({})
   }
 
-  static async delete(_request: FastifyRequest, reply: FastifyReply) {
-    return reply.code(200).send({})
+  static async delete(request: FastifyRequest<{ Params: { id: string }, User: SignParamsWithJWT }>, reply: FastifyReply) {
+    const locationDeleteUseCase = diContainer.resolve<LocationDeleteUseCase>(INJECTIONS.useCases.locations.deleteUseCase)
+    const user = request.user as SignParamsWithJWT
+    await locationDeleteUseCase.handler({
+      id: String(request.params.id),
+      tenantId: user.tenantId
+    })
+    return reply.code(200).send()
   }
 }
 
