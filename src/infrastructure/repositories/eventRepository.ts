@@ -22,7 +22,7 @@ export class EventsRepository {
         required: true
       },
       order: [
-        ['date', 'DESC']
+        ['created_at', 'DESC']
       ]
     })
   }
@@ -90,5 +90,13 @@ export class EventsRepository {
       console.log(error)
       throw new HttpNotFound("EVENT NOT FOUND")
     }
+  }
+
+  public async delete(id: string, tenantId: string): Promise<number> {
+    const location = await Event.destroy({
+      where: { id: id, tenantId: tenantId },
+    })
+    if (location == 0) throw new HttpNotFound("EVENT NOT FOUND")
+    return location
   }
 }

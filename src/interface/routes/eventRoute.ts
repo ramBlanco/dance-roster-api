@@ -78,7 +78,6 @@ class EventRoute implements IRoute {
       EventController.update,
     )
 
-    //TODO: add event controller method
     fastify.delete(
       '/:id',
       {
