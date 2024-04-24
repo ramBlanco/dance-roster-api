@@ -12,6 +12,7 @@ import { IEventPersonIndexRequest } from '../../domain/interfaces/requests/event
 import { diContainer } from '@fastify/awilix'
 import { SignParamsWithJWT } from '../../domain/interfaces/jwtInterfaces'
 import { EventDeleteUseCase } from '../../application/useCases/events/eventDeleteUseCase'
+import { DeletePersonFromEventUseCase } from '~src/application/useCases/events/deletePersonFromEventUseCase'
 
 class EventController {
   static async index(request: FastifyRequest<{ Querystring: IEventIndexRequest, User: SignParamsWithJWT }>, reply: FastifyReply) {
@@ -55,6 +56,20 @@ class EventController {
       eventId: request.params.id,
     })
     return reply.sendPaginationResponseData(persons)
+  }
+
+  static async deletePersons(request: FastifyRequest<{ Params: { id: string }, Body: { eventPersonId: string}, User: SignParamsWithJWT }>, reply: FastifyReply) {
+    const deletePersonFromEventUseCase = diContainer.resolve<DeletePersonFromEventUseCase>(INJECTIONS.useCases.events.deletePersonFromEventUseCase)
+    const tenantId = (request.user as SignParamsWithJWT).tenantId
+
+    const persons = await deletePersonFromEventUseCase.handler(
+      {
+        eventId: request.params.id,
+        eventPersonId: request.body.eventPersonId,
+        tenantId: tenantId
+      }
+    )
+    return reply.code(200).send(persons)
   }
 
   static async update(_request: FastifyRequest, reply: FastifyReply) {

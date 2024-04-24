@@ -67,6 +67,16 @@ class EventRoute implements IRoute {
       EventController.getPersons,
     )
 
+    fastify.delete(
+      '/:id/persons',
+      {
+        schema: {
+          // description: localeService.translate('routes.event.getPersons.description'),
+        },
+      },
+      EventController.deletePersons,
+    )
+
     //TODO: add event controller method
     fastify.put(
       '/:id',

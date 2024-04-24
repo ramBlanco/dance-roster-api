@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto'
 import { EventPerson } from '../database/postgresql/models/eventPerson.model'
 import { Person } from '../database/postgresql/models/person.model'
+import { HttpNotFound } from '../../application/libraries/httpErrors'
 
 export class EventPersonRepository {
 
@@ -41,5 +42,13 @@ export class EventPersonRepository {
       locationId: params.locationId,
       personId: params.personId,
     }, { returning: true })
+  }
+
+  public async delete(id: string, tenantId: string, eventId: string): Promise<number> {
+    const eventPerson = await EventPerson.destroy({
+      where: { id: id, tenantId: tenantId, eventId: eventId },
+    })
+    if (eventPerson == 0) throw new HttpNotFound("PERSON NOT FOUND")
+    return eventPerson
   }
 }

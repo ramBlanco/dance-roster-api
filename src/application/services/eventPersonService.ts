@@ -31,4 +31,13 @@ export class EventPersonService {
     const eventPersons = await Promise.all(persons.map((person) => this.storeIfNotExist(person)))
     return eventPersons
   }
+
+  async delete(params: {
+    eventId: string,
+    tenantId: string, 
+    eventPersonId: string
+  }) {
+    const eventPerson = await this.eventPersonRepository.delete(params.eventPersonId, params.tenantId, params.eventId)
+    return eventPerson
+  }
 }
