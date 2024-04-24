@@ -1,8 +1,8 @@
 import { UseCaseBase } from '../../../domain/interfaces/useCaseInterface'
 import { ValidationService } from '../../services/validationService'
-import { PersonService } from '~src/application/services/personService'
-import { Person } from '~src/infrastructure/database/postgresql/models/person.model'
-import { IStorePersonRequest } from '~src/domain/interfaces/requests/persons/storePersonRequest'
+import { PersonService } from '../../../application/services/personService'
+import { Person } from '../../../infrastructure/database/postgresql/models/person.model'
+import { IStorePersonRequest } from '../../../domain/interfaces/requests/persons/storePersonRequest'
 
 export class PersonStoreUseCase extends UseCaseBase {
   constructor(

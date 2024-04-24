@@ -12,7 +12,7 @@ import { IEventPersonIndexRequest } from '../../domain/interfaces/requests/event
 import { diContainer } from '@fastify/awilix'
 import { SignParamsWithJWT } from '../../domain/interfaces/jwtInterfaces'
 import { EventDeleteUseCase } from '../../application/useCases/events/eventDeleteUseCase'
-import { DeletePersonFromEventUseCase } from '~src/application/useCases/events/deletePersonFromEventUseCase'
+import { DeletePersonFromEventUseCase } from '../../application/useCases/events/deletePersonFromEventUseCase'
 
 class EventController {
   static async index(request: FastifyRequest<{ Querystring: IEventIndexRequest, User: SignParamsWithJWT }>, reply: FastifyReply) {

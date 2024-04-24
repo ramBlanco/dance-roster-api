@@ -1,7 +1,7 @@
 import { UseCaseBase } from '../../../domain/interfaces/useCaseInterface'
 import { ValidationService } from '../../services/validationService'
-import { EventPersonService } from '~src/application/services/eventPersonService'
-import { IDeletePersonFromEventRequest } from '~src/domain/interfaces/requests/events/deletePersonFromEventRequest'
+import { EventPersonService } from '../../../application/services/eventPersonService'
+import { IDeletePersonFromEventRequest } from '../../../domain/interfaces/requests/events/deletePersonFromEventRequest'
 
 export class DeletePersonFromEventUseCase extends UseCaseBase {
   constructor(

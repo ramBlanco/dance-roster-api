@@ -4,8 +4,8 @@ import { ValidationService } from '../../services/validationService'
 import { PersonService } from '../../../application/services/personService'
 import { IAddPersonToEventRequest } from '../../../domain/interfaces/requests/events/addPersonToEventRequest'
 import { Event } from '../../../infrastructure/database/postgresql/models/event.model'
-import { EventPersonService } from '~src/application/services/eventPersonService'
-import { EventPersonEntity } from '~src/domain/entities/eventPersonEntity'
+import { EventPersonService } from '../../../application/services/eventPersonService'
+import { EventPersonEntity } from '../../../domain/entities/eventPersonEntity'
 import { Person } from '../../../infrastructure/database/postgresql/models/person.model'
 
 export class AddPersonToEventUseCase extends UseCaseBase {

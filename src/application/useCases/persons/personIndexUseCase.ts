@@ -1,8 +1,8 @@
 import { UseCaseBase } from '../../../domain/interfaces/useCaseInterface'
 import { QueryFilterHandler } from '../../handlers/queryFilterHandler'
-import { PersonService } from '~src/application/services/personService';
-import { Person } from '~src/infrastructure/database/postgresql/models/person.model';
-import { IPersonIndexRequest } from '~src/domain/interfaces/requests/persons/indexPersonRequest';
+import { PersonService } from '../../../application/services/personService';
+import { Person } from '../../../infrastructure/database/postgresql/models/person.model';
+import { IPersonIndexRequest } from '../../../domain/interfaces/requests/persons/indexPersonRequest';
 
 export class PersonIndexUseCase extends UseCaseBase {
   constructor(

@@ -2,8 +2,8 @@ import { UserService } from "../../../application/services/userService";
 import { UseCaseBase } from "../../../domain/interfaces/useCaseInterface";
 import { DecodedRefreshToken } from "../../../domain/interfaces/jwtInterfaces";
 import { HttpNotFound } from "../../../application/libraries/httpErrors";
-import { User } from "~src/infrastructure/database/postgresql/models/user.model";
-import { IRefreshTokenResponse } from "~src/domain/interfaces/responses/auth/refreshTokenResponse";
+import { User } from "../../../infrastructure/database/postgresql/models/user.model";
+import { IRefreshTokenResponse } from "../../../domain/interfaces/responses/auth/refreshTokenResponse";
 
 export class RefreshTokenUseCase extends UseCaseBase {
 

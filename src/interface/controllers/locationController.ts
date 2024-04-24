@@ -6,8 +6,8 @@ import { LocationStoreUseCase } from '../../application/useCases/locations/locat
 import { StoreLocationRequest } from '../../domain/interfaces/requests/locations/storeLocationRequest'
 import { LocationViewUseCase } from '../../application/useCases/locations/locationViewUseCase '
 import { diContainer } from '@fastify/awilix'
-import { SignParamsWithJWT } from '~src/domain/interfaces/jwtInterfaces'
-import { LocationDeleteUseCase } from '~src/application/useCases/locations/locationDeleteUseCase'
+import { SignParamsWithJWT } from '../../domain/interfaces/jwtInterfaces'
+import { LocationDeleteUseCase } from '../../application/useCases/locations/locationDeleteUseCase'
 
 class LocationController {
   static async index(request: FastifyRequest<{ Querystring: ILocationIndexRequest, User: SignParamsWithJWT }>, reply: FastifyReply) {
