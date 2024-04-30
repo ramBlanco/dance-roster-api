@@ -9,6 +9,8 @@ import { AddPersonToEventUseCase } from "../../../application/useCases/events/ad
 import { GetPersonFromEventUseCase } from "../../../application/useCases/events/getPersonFromEventUseCase";
 import { EventDeleteUseCase } from "../../../application/useCases/events/eventDeleteUseCase";
 import { DeletePersonFromEventUseCase } from "../../../application/useCases/events/deletePersonFromEventUseCase";
+import { EventUpdateUseCase } from "../../../application/useCases/events/eventUpdateUseCase";
+import { EventGetNextUseCase } from "../../../application/useCases/events/eventGetNextUseCase";
 
 export function eventDependency(container: AwilixContainer): void {
 
@@ -70,4 +72,19 @@ export function eventDependency(container: AwilixContainer): void {
       { lifetime: Lifetime.SCOPED }
     )
   })
+
+  container.register({
+    [INJECTIONS.useCases.events.updateUseCase]: asFunction(
+      ({ validationService, eventService }) => new EventUpdateUseCase(validationService, eventService),
+      { lifetime: Lifetime.SCOPED }
+    )
+  })
+
+  container.register({
+    [INJECTIONS.useCases.events.eventGetNextUseCase]: asFunction(
+      ({ eventService }) => new EventGetNextUseCase(eventService),
+      { lifetime: Lifetime.SCOPED }
+    )
+  })
+  
 }

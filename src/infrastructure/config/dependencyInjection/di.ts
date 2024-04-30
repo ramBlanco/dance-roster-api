@@ -29,10 +29,12 @@ export const INJECTIONS = {
       indexUseCase: 'eventsIndexUseCase',
       storeUseCase: 'eventStoreUseCase',
       viewUseCase: 'eventViewUseCase',
+      updateUseCase: 'updateViewUseCase',
       deleteEventUseCase: 'deleteEventUseCase',
       addPersonToEventUseCase: 'addPersonToEventUseCase',
       getPersonFromEventUseCase: 'getPersonFromEventUseCase',
       deletePersonFromEventUseCase: 'deletePersonFromEventUseCase',
+      eventGetNextUseCase: 'eventGetNextUseCase',
     },
     students: {
       indexUseCase: 'studentIndexUseCase'
@@ -47,6 +49,7 @@ export const INJECTIONS = {
       indexUseCase: 'personIndexUseCase',
       storeUseCase: 'personStoreUseCase',
       viewUseCase: 'personViewUseCase',
+      getBirthdaysUseCase: 'getBirthdaysUseCase'
     },
   }
 }

@@ -5,11 +5,12 @@ import { PersonRepository } from "../../../infrastructure/repositories/personRep
 import { PersonIndexUseCase } from "../../../application/useCases/persons/personIndexUseCase";
 import { PersonStoreUseCase } from "../../../application/useCases/persons/personStoreUseCase";
 import { PersonViewUseCase } from "../../../application/useCases/persons/personViewUseCase ";
+import { GetBirthdaysUseCase } from "../../../application/useCases/persons/getBirthdaysUseCase";
 
 export function personDependency(container: AwilixContainer): void {
   container.register({
     [INJECTIONS.services.personService]: asFunction(
-      ({ personRepository }) => new PersonService(personRepository),
+      ({ personRepository, eventRepository, eventPersonRepository }) => new PersonService(personRepository, eventRepository, eventPersonRepository),
       { lifetime: Lifetime.SCOPED }
     )
   })
@@ -39,4 +40,12 @@ export function personDependency(container: AwilixContainer): void {
       { lifetime: Lifetime.SCOPED }
     )
   })
+
+  container.register({
+    [INJECTIONS.useCases.persons.getBirthdaysUseCase]: asFunction(
+      ({ personService }) => new GetBirthdaysUseCase(personService),
+      { lifetime: Lifetime.SCOPED }
+    )
+  })
+  
 }

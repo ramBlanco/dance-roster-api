@@ -1,6 +1,9 @@
 import { randomUUID } from 'crypto'
 import { HttpNotFound } from '../../application/libraries/httpErrors'
 import { Person } from '../database/postgresql/models/person.model'
+import { IPaginationResponseRepository } from '~src/domain/interfaces/paginationResponseRepositoryInterface'
+import { Event } from '../database/postgresql/models/event.model'
+import { Sequelize } from 'sequelize'
 
 export class PersonRepository {
   public async getAll(params: {
@@ -34,5 +37,25 @@ export class PersonRepository {
     const event = await Person.findOne({ where: { id: String(id) } })
     if (!event) throw new HttpNotFound("LOCATION NOT FOUND")
     return event
+  }
+
+  public async getBirthDays(params: {
+    where: Record<string, unknown>,
+    limit: number,
+    offset: number,
+  }): Promise<IPaginationResponseRepository<Person>> {
+    return await Person.findAndCountAll({
+      where: params.where,
+      limit: params.limit,
+      offset: params.offset,
+      order: [
+        Sequelize.literal(`CASE
+        WHEN DATE_PART('month', birth_date) >= EXTRACT(MONTH FROM CURRENT_DATE)
+        THEN DATE_PART('month', birth_date) - EXTRACT(MONTH FROM CURRENT_DATE)
+        ELSE 12 - EXTRACT(MONTH FROM CURRENT_DATE) + DATE_PART('month', birth_date)
+        END`),
+        Sequelize.literal(`DATE_PART('day', birth_date)`)
+      ]
+    })
   }
 }

@@ -13,9 +13,12 @@ import { diContainer } from '@fastify/awilix'
 import { SignParamsWithJWT } from '../../domain/interfaces/jwtInterfaces'
 import { EventDeleteUseCase } from '../../application/useCases/events/eventDeleteUseCase'
 import { DeletePersonFromEventUseCase } from '../../application/useCases/events/deletePersonFromEventUseCase'
+import { EventUpdateUseCase } from '../../application/useCases/events/eventUpdateUseCase'
+import { UpdateEventRequest } from '../../domain/interfaces/requests/events/updateEventRequest'
+import { EventGetNextUseCase } from '../../application/useCases/events/eventGetNextUseCase'
 
 class EventController {
-  static async index(request: FastifyRequest<{ Querystring: IEventIndexRequest, User: SignParamsWithJWT }>, reply: FastifyReply) {
+  static async index(request: FastifyRequest<{ Querystring: IEventIndexRequest }>, reply: FastifyReply) {
     const getEventIndexUseCase = diContainer.resolve<EventIndexUseCase>(INJECTIONS.useCases.events.indexUseCase)
     const events = await getEventIndexUseCase.handler({
       filters: request.query,
@@ -25,7 +28,7 @@ class EventController {
     return reply.sendPaginationResponseData(events.rows, events.count)
   }
 
-  static async store(request: FastifyRequest<{ Body: StoreEventRequest, User: SignParamsWithJWT }>, reply: FastifyReply) {
+  static async store(request: FastifyRequest<{ Body: StoreEventRequest }>, reply: FastifyReply) {
     const eventStoreUseCase = diContainer.resolve<EventStoreUseCase>(INJECTIONS.useCases.events.storeUseCase)
     request.body.tenantId = (request.user as SignParamsWithJWT).tenantId
 
@@ -58,7 +61,7 @@ class EventController {
     return reply.sendPaginationResponseData(persons)
   }
 
-  static async deletePersons(request: FastifyRequest<{ Params: { id: string }, Body: { eventPersonId: string}, User: SignParamsWithJWT }>, reply: FastifyReply) {
+  static async deletePersons(request: FastifyRequest<{ Params: { id: string }, Body: { eventPersonId: string } }>, reply: FastifyReply) {
     const deletePersonFromEventUseCase = diContainer.resolve<DeletePersonFromEventUseCase>(INJECTIONS.useCases.events.deletePersonFromEventUseCase)
     const tenantId = (request.user as SignParamsWithJWT).tenantId
 
@@ -72,11 +75,21 @@ class EventController {
     return reply.code(200).send(persons)
   }
 
-  static async update(_request: FastifyRequest, reply: FastifyReply) {
-    return reply.code(200).send({})
+  static async update(request: FastifyRequest<{ Params: { id: string }, Body: UpdateEventRequest }>, reply: FastifyReply) {
+    const eventUpdateUseCase = diContainer.resolve<EventUpdateUseCase>(INJECTIONS.useCases.events.updateUseCase)
+    const tenantId = (request.user as SignParamsWithJWT).tenantId
+
+    const updatedEvent = await eventUpdateUseCase.handler(
+      {
+        eventId: request.params.id,
+        tenantId: tenantId,
+        bodyRequest: request.body
+      }
+    )
+    return reply.code(200).send(updatedEvent)
   }
 
-  static async delete(request: FastifyRequest<{ Params: { id: string }, User: SignParamsWithJWT }>, reply: FastifyReply) {
+  static async delete(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
     const eventDeleteUseCase = diContainer.resolve<EventDeleteUseCase>(INJECTIONS.useCases.events.deleteEventUseCase)
     const user = request.user as SignParamsWithJWT
     await eventDeleteUseCase.handler({
@@ -84,6 +97,13 @@ class EventController {
       tenantId: user.tenantId
     })
     return reply.code(200).send()
+  }
+
+  static async getNextEvent(request: FastifyRequest, reply: FastifyReply) {
+    const eventGetNextUseCase = diContainer.resolve<EventGetNextUseCase>(INJECTIONS.useCases.events.eventGetNextUseCase)
+    const tenantId = (request.user as SignParamsWithJWT).tenantId
+    const response = await eventGetNextUseCase.handler({ tenantId: tenantId })
+    return reply.code(200).send(response)
   }
 }
 

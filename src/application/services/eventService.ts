@@ -3,6 +3,7 @@ import { IQueryFilterHandlerResponse } from "../../domain/interfaces/strategies/
 import { EventEntity } from "../../domain/entities/eventEntity";
 import { Event } from "../../infrastructure/database/postgresql/models/event.model";
 import { IPaginationResponseRepository } from "../../domain/interfaces/paginationResponseRepositoryInterface";
+import { UpdateEventRequest } from "../../domain/interfaces/requests/events/updateEventRequest";
 
 export class EventService {
   constructor(private readonly eventRepository: EventsRepository) { }
@@ -32,5 +33,13 @@ export class EventService {
 
   async deleteEvent(id: string, tenantId: string): Promise<void> {
     await this.eventRepository.delete(id, tenantId)
+  }
+
+  async updateEvent(eventBody: UpdateEventRequest): Promise<Event> {
+    return await this.eventRepository.update(eventBody)
+  }
+
+  async getNextEvent(tenantId: string): Promise<Event> {
+    return await this.eventRepository.getNextEvent(tenantId)
   }
 }

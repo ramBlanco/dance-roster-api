@@ -5,6 +5,7 @@ import EventRoute from "./interface/routes/eventRoute";
 import IndexRoute from "./interface/routes/indexRoute";
 import LocationRoute from "./interface/routes/locationRoute";
 import StatusRoute from "./interface/routes/statusRoute";
+import PersonRoute from "./interface/routes/personRoute";
 
 export async function buildApp(): Promise<FastifyInstance> {
   const appFactory = new AppServer()
@@ -15,6 +16,7 @@ export async function buildApp(): Promise<FastifyInstance> {
       // new IndexRoute(),
       new EventRoute(),
       new LocationRoute(),
+      new PersonRoute()
     ],
   });
 };

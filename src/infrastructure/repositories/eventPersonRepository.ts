@@ -7,8 +7,8 @@ export class EventPersonRepository {
 
   public async getAll(params: {
     where: Record<string, unknown>,
-    limit: number,
-    offset: number
+    limit?: number,
+    offset?: number
   }): Promise<EventPerson[]> {
     return await EventPerson.findAll({
       where: params.where,

@@ -77,7 +77,6 @@ class EventRoute implements IRoute {
       EventController.deletePersons,
     )
 
-    //TODO: add event controller method
     fastify.put(
       '/:id',
       {
@@ -96,6 +95,16 @@ class EventRoute implements IRoute {
         },
       },
       EventController.delete,
+    )
+
+    fastify.get(
+      '/next-event',
+      {
+        schema: {
+          // description: localeService.translate('routes.event.getPersons.description'),
+        },
+      },
+      EventController.getNextEvent,
     )
   }
 }

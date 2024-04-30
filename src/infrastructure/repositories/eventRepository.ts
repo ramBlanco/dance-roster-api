@@ -6,12 +6,14 @@ import { Location } from '../database/postgresql/models/location.model'
 import { Person } from '../database/postgresql/models/person.model'
 import { IPaginationResponseRepository } from '../../domain/interfaces/paginationResponseRepositoryInterface'
 import { slugify } from '../../application/libraries/sluglify'
+import { UpdateEventRequest } from '../../domain/interfaces/requests/events/updateEventRequest'
+import { Op, Sequelize } from 'sequelize'
 
 export class EventsRepository {
   public async getEvents(params: {
     where: Record<string, unknown>,
-    limit: number,
-    offset: number
+    limit?: number,
+    offset?: number
   }): Promise<IPaginationResponseRepository<Event>> {
     return await Event.findAndCountAll({
       where: params.where,
@@ -98,5 +100,51 @@ export class EventsRepository {
     })
     if (location == 0) throw new HttpNotFound("EVENT NOT FOUND")
     return location
+  }
+
+  public async update(body: UpdateEventRequest) {
+
+    const currentData = await this.view(String(body.id))
+    delete body.id
+
+    if (currentData.title != body.title) {
+      body.slug = slugify(`${body.title}-${body.date}`)
+
+      const slugExists = await this.viewBySlug(body.slug)
+      if (slugExists.count > 0) {
+        body.slug = `${body.slug}_${slugExists.count + 1}`
+      }
+    }
+
+    const [countUpdated, [eventData]] = await Event.update(
+      body,
+      { where: { id: currentData.id, tenantId: body.tenantId }, returning: true }
+    )
+
+    if (countUpdated == 0) throw new HttpNotFound("EVENT NOT FOUND")
+
+    return eventData
+  }
+
+  public async getNextEvent(tenantId: string): Promise<Event> {
+    const event = await Event.findOne({
+      where: {
+        tenantId: tenantId,
+        [Op.and]: [
+          Sequelize.where(Sequelize.col('date'), Op.gte, Sequelize.literal('CURRENT_DATE')),
+        ]
+      },
+      include: [
+        {
+          model: Location,
+          required: false,
+        },
+      ],
+      order: [
+        ['date', 'ASC']
+      ]
+    })
+    if (!event) throw new HttpNotFound("EVENT NOT FOUND")
+    return event
   }
 }
