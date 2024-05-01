@@ -137,7 +137,7 @@ export class EventsRepository {
       include: [
         {
           model: Location,
-          required: false,
+          required: true,
         },
       ],
       order: [

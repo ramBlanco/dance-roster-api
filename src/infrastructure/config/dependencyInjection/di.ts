@@ -23,6 +23,7 @@ export const INJECTIONS = {
     validationService: 'validationService',
     personService: 'personService',
     eventPersonService: 'eventPersonService',
+    metricService: 'metricService',
   },
   useCases: {
     events: {
@@ -50,6 +51,9 @@ export const INJECTIONS = {
       storeUseCase: 'personStoreUseCase',
       viewUseCase: 'personViewUseCase',
       getBirthdaysUseCase: 'getBirthdaysUseCase'
+    },
+    metric: {
+      metricSalesUseCase: 'metricSalesUseCase'
     },
   }
 }

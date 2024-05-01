@@ -2,6 +2,7 @@ import { IQueryFilterHandlerResponse } from "../../domain/interfaces/strategies/
 import { EventPersonRepository } from "../../infrastructure/repositories/eventPersonRepository";
 import { EventPerson } from "../../infrastructure/database/postgresql/models/eventPerson.model";
 import { EventPersonEntity } from "../../domain/entities/eventPersonEntity";
+import { IMetricSalesResponse } from "../../domain/interfaces/responses/metrics/metricSalesResponse";
 
 export class EventPersonService {
   constructor(
@@ -39,5 +40,9 @@ export class EventPersonService {
   }) {
     const eventPerson = await this.eventPersonRepository.delete(params.eventPersonId, params.tenantId, params.eventId)
     return eventPerson
+  }
+
+  async salesMetric(tenantId: string, locationId: string): Promise<IMetricSalesResponse[]> {
+    return await this.eventPersonRepository.getMetricEvents(tenantId, locationId)
   }
 }

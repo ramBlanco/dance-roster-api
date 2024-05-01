@@ -2,6 +2,9 @@ import { randomUUID } from 'crypto'
 import { EventPerson } from '../database/postgresql/models/eventPerson.model'
 import { Person } from '../database/postgresql/models/person.model'
 import { HttpNotFound } from '../../application/libraries/httpErrors'
+import { Sequelize } from 'sequelize'
+import { IMetricSalesResponse } from '../../domain/interfaces/responses/metrics/metricSalesResponse'
+import { Event } from '../database/postgresql/models/event.model'
 
 export class EventPersonRepository {
 
@@ -50,5 +53,20 @@ export class EventPersonRepository {
     })
     if (eventPerson == 0) throw new HttpNotFound("PERSON NOT FOUND")
     return eventPerson
+  }
+
+
+  public async getMetricEvents(tenantId: string, locationId: string): Promise<IMetricSalesResponse[]> {
+    const events = await EventPerson.findAll({
+      attributes: ['event_id', [Sequelize.fn('COUNT', 'person_id'), 'people']],
+      include: [{
+        attributes: ['id', 'title', 'date'],
+        model: Event,
+        required: true
+      }],
+      where: { tenantId, locationId },
+      group: ['event_id', 'Event.id'],
+    })
+    return events as unknown as IMetricSalesResponse[]
   }
 }

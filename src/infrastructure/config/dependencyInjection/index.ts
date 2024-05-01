@@ -11,6 +11,7 @@ import { userDependency } from './userDependency'
 import { tenantDependency } from './tenantDependency'
 import { eventPersonDependency } from './eventPersonDependency'
 import { authDependency } from './authDependency'
+import { metricDependency } from './metricDependency'
 
 export function registerDependencies(): void {
   try {
@@ -42,6 +43,7 @@ export function registerDependencies(): void {
     userDependency(diContainer)
     tenantDependency(diContainer)
     eventPersonDependency(diContainer)
+    metricDependency(diContainer)
   } catch (error) {
     console.error(error)
   }
